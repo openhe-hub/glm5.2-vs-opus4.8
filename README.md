@@ -4,9 +4,9 @@
 
 ## 三点结论
 
-1. **能力**：GLM-5.2 的最终交付质量非常接近 Claude Opus 4.8。粗略体感上，GLM-5.2 大概落在 Claude Opus 4.5 - Opus 4.6 之间，或者在 GPT-5.2-Codex / GPT-5.3-Codex 之间。
+1. **能力**：GLM-5.2 的最终交付质量仍小于 Claude Opus 4.8，但差距没有速度体验那么大。粗略体感上，GLM-5.2 大概落在 Claude Opus 4.5 - Opus 4.6 之间，或者在 GPT-5.2-Codex / GPT-5.3-Codex 之间。
 2. **速度**：GLM-5.2 + opencode 这一关拉了，整体大概是 Claude Code 的 **3-5 倍耗时**。如果按开发效率计分，差距会被明显拉开。
-3. **价格**：Claude Code 使用的是 **Max $100/month** 订阅；GLM 使用的是 **Lite $16/month** 订阅。不过 GLM-5.2 在 peak hours 有 **3x 惩罚倍率**，真实性价比要结合使用时段看。
+3. **价格**：Claude Code 使用的是 **Max $100/month** 订阅；GLM 使用的是国际版 **Lite $16/month** 订阅。国内 coding plan 约便宜一半，但目前基本抢不到；另外 GLM-5.2 在 peak hours 有 **3x 惩罚倍率**，真实性价比要结合地区、计划和使用时段看。
 
 ## 任务设计
 
@@ -39,7 +39,7 @@ adjusted_score = raw_score - time_penalty
 | Claude Opus 4.8 + Claude Code | 282 / 285 | 0 | 282 / 285 |
 | GLM-5.2 + opencode | 279 / 285 | 35 | 244 / 285 |
 
-**一句话总结**：GLM-5.2 的代码能力很接近，但响应速度和 agent loop 体验明显拖后腿；Claude Code 在“同样时间内更快完成高质量交付”这个维度上优势很大。
+**一句话总结**：GLM-5.2 的代码能力仍弱于 Claude Opus 4.8，但已经能完成高难任务；真正拖后腿的是响应速度和 agent loop 体验。Claude Code 在“同样时间内更快完成高质量交付”这个维度上优势很大。
 
 ## 仓库结构
 
