@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#F2EEE5" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#100F0C" media="(prefers-color-scheme: dark)">
+<meta name="description" content="FORM 01 — a mechanical automatic watch, machined from a single billet. Configurator, specifications and detail studies by FORM Atelier.">
+<title>FORM 01 — Mechanical Studies / FORM Atelier</title>
+<style>
+/* ============================================================
+   FORM 01 — single-file product page
+   Tokens ---------------------------------------------------- */
+:root{
+  --bg:#F2EEE5; --bg-elev:#EAE4D6; --bg-sunken:#ECE7DB;
+  --ink:#181612; --ink-2:#3A352D; --ink-soft:#5E574A; --ink-faint:#6E6759;
+  --rule:#CFC8B8; --rule-strong:#B7AE9B;
+  --accent:#B23A1E; --accent-2:#8E2D14; --on-accent:#F7F2E8;
+  --good:#3A6A3F; --warn:#9A6A1F;
+  --shadow:0 1px 0 rgba(24,22,18,.04), 0 18px 40px -22px rgba(24,22,18,.28);
+  --sans:"Helvetica Neue",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,system-ui,sans-serif;
+  --serif:Georgia,"Times New Roman",Times,serif;
+  --mono:ui-monospace,"SF Mono","Cascadia Code","Roboto Mono",Menlo,Consolas,monospace;
+  --maxw:1320px; --gut:clamp(20px,4vw,56px);
+  --r:2px;
+  --t-fast:.16s; --t:.28s; --ease:cubic-bezier(.2,.7,.2,1);
+  color-scheme:light;
+}
+/* explicit overrides win over the system-following rules below */
+:root[data-theme="dark"]{
+  --bg:#100F0C; --bg-elev:#1A1814; --bg-sunken:#0B0A08;
+  --ink:#EDE7D8; --ink-2:#C9C2B0; --ink-soft:#9C9484; --ink-faint:#8A8273;
+  --rule:#2C2820; --rule-strong:#403A2E;
+  --accent:#E0613F; --accent-2:#B23A1E; --on-accent:#15120D;
+  --good:#82B47E;
+  --shadow:0 1px 0 rgba(0,0,0,.3), 0 22px 50px -22px rgba(0,0,0,.7);
+  color-scheme:dark;
+}
+:root[data-theme="light"]{
+  --bg:#F2EEE5; --bg-elev:#EAE4D6; --bg-sunken:#ECE7DB;
+  --ink:#181612; --ink-2:#3A352D; --ink-soft:#5E574A; --ink-faint:#6E6759;
+  --rule:#CFC8B8; --rule-strong:#B7AE9B;
+  --accent:#B23A1E; --accent-2:#8E2D14; --on-accent:#F7F2E8;
+  --shadow:0 1px 0 rgba(24,22,18,.04), 0 18px 40px -22px rgba(24,22,18,.28);
+  color-scheme:light;
+}
+/* default: follow the system. Later source order + matching media beats the bare :root above. */
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme]){
+    --bg:#100F0C; --bg-elev:#1A1814; --bg-sunken:#0B0A08;
+    --ink:#EDE7D8; --ink-2:#C9C2B0; --ink-soft:#9C9484; --ink-faint:#8A8273;
+    --rule:#2C2820; --rule-strong:#403A2E;
+    --accent:#E0613F; --accent-2:#B23A1E; --on-accent:#15120D;
+    --good:#82B47E;
+    --shadow:0 1px 0 rgba(0,0,0,.3), 0 22px 50px -22px rgba(0,0,0,.7);
+    color-scheme:dark;
+  }
+}
+
+/* Reset ----------------------------------------------------- */
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:var(--sans);font-size:clamp(15px,.92vw + 12px,17px);
+  line-height:1.55;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+  overflow-x:hidden;
+}
+img,svg{display:block;max-width:100%;height:auto}
+h1,h2,h3,h4,p,figure,fieldset{margin:0}
+button,input{font:inherit;color:inherit}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--accent);color:var(--on-accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:2px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+/* Layout ---------------------------------------------------- */
+.wrap{max-width:var(--maxw);margin-inline:auto;padding-inline:var(--gut)}
+.rule{height:1px;background:var(--rule);border:0;width:100%}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-soft)}
+.serif-it{font-family:var(--serif);font-style:italic;font-weight:400}
+
+/* Skip link ------------------------------------------------- */
+.skip{position:absolute;left:12px;top:-44px;z-index:200;background:var(--ink);color:var(--bg);padding:10px 14px;border-radius:0 0 6px 6px;transition:top var(--t-fast)}
+.skip:focus{top:0}
+
+/* Nav ------------------------------------------------------- */
+.nav{position:sticky;top:0;z-index:80;background:color-mix(in srgb, var(--bg) 82%, transparent);backdrop-filter:saturate(140%) blur(12px);-webkit-backdrop-filter:saturate(140%) blur(12px);border-bottom:1px solid var(--rule)}
+.nav-row{display:flex;align-items:center;gap:18px;height:60px}
+.brand{font-weight:700;letter-spacing:.04em;font-size:18px}
+.brand sup{font-family:var(--mono);font-weight:400;font-size:9px;letter-spacing:.18em;color:var(--ink-soft);margin-left:4px;vertical-align:super}
+.nav-links{display:flex;gap:26px;margin-left:8px}
+.nav-links a{font-size:13px;color:var(--ink-2);padding:6px 0;position:relative}
+.nav-links a::after{content:"";position:absolute;left:0;right:100%;bottom:0;height:1px;background:var(--ink);transition:right var(--t) var(--ease)}
+.nav-links a:hover{color:var(--ink)}
+.nav-links a:hover::after{right:0}
+.nav-spacer{flex:1}
+.icon-btn{display:inline-flex;align-items:center;gap:8px;background:none;border:1px solid var(--rule-strong);color:var(--ink-2);padding:7px 12px;border-radius:999px;cursor:pointer;transition:background var(--t-fast),color var(--t-fast),border-color var(--t-fast)}
+.icon-btn:hover{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.icon-btn[data-busy="true"]{pointer-events:none;opacity:.6}
+.icon-btn svg{width:15px;height:15px}
+.bag-btn{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase}
+.bag-count{display:inline-grid;place-items:center;min-width:18px;height:18px;padding:0 5px;border-radius:999px;background:var(--accent);color:var(--on-accent);font-size:10px}
+
+/* Hero ------------------------------------------------------ */
+.hero{position:relative;padding-top:clamp(28px,5vw,64px);padding-bottom:0}
+.hero-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:clamp(16px,2.4vw,32px);align-items:start}
+.hero-meta{grid-column:1/-1;display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding-bottom:18px;border-bottom:1px solid var(--rule);flex-wrap:wrap}
+.hero-meta .seq{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft)}
+.hero-copy{grid-column:1/span 6;padding-top:clamp(20px,4vw,52px)}
+.hero h1{font-size:clamp(46px,8.4vw,128px);line-height:.92;letter-spacing:-.03em;font-weight:700;margin:0 0 28px}
+.hero h1 .l2{color:var(--ink-soft)}
+.hero h1 .l3{display:block;color:var(--accent)}
+.hero-lede{max-width:42ch;color:var(--ink-2);font-size:clamp(15px,1.1vw,17.5px);margin-bottom:30px}
+.hero-specs{display:flex;flex-wrap:wrap;gap:10px 30px;font-family:var(--mono);font-size:12px;color:var(--ink-soft);letter-spacing:.04em}
+.hero-specs b{display:block;color:var(--ink);font-weight:600;font-size:13px;letter-spacing:.02em;margin-top:2px}
+.hero-cta{margin-top:30px;display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:14px 22px;border-radius:999px;border:1px solid var(--ink);background:var(--ink);color:var(--bg);font-size:13px;letter-spacing:.06em;cursor:pointer;transition:transform var(--t-fast) var(--ease),background var(--t-fast),color var(--t-fast),box-shadow var(--t-fast);position:relative}
+.btn:hover{transform:translateY(-1px)}
+.btn:active{transform:translateY(1px)}
+.btn[disabled]{opacity:.5;cursor:not-allowed;transform:none}
+.btn--ghost{background:transparent;color:var(--ink)}
+.btn--ghost:hover{background:var(--ink);color:var(--bg)}
+.btn .spin{width:14px;height:14px;border-radius:50%;border:2px solid currentColor;border-right-color:transparent;animation:sp 0.7s linear infinite;display:none}
+.btn[data-loading="true"] .spin{display:inline-block}
+.btn[data-loading="true"] .btn-label{opacity:.7}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+.hero-stage{grid-column:8/span 5;position:relative;min-height:420px;display:grid;align-items:center;justify-items:center}
+.hero-stage::before{content:"";position:absolute;inset:auto 8% 8% 8%;height:1px;background:var(--rule);align-self:end}
+.watch-stage{width:100%;max-width:440px;will-change:transform}
+.watch-stage svg{filter:drop-shadow(0 30px 40px rgba(24,22,18,.22))}
+.dim-label{position:absolute;font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint);pointer-events:none}
+.dim-label.left{left:-2px;top:54%}
+.dim-label.right{right:-2px;top:54%}
+.dim-label span{color:var(--ink-soft)}
+
+.ticker{grid-column:1/-1;margin-top:clamp(36px,6vw,84px);padding:14px 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);overflow:hidden}
+.ticker-track{display:flex;gap:0;flex-wrap:wrap;justify-content:space-between;font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft);min-width:100%}
+.ticker-track span{white-space:nowrap;padding:0 14px}
+.ticker-track span + span{border-left:1px solid var(--rule)}
+
+/* Section frame -------------------------------------------- */
+section{scroll-margin-top:72px}
+.section-head{display:grid;grid-template-columns:repeat(12,1fr);gap:clamp(16px,2.4vw,32px);align-items:end;padding:clamp(56px,8vw,110px) 0 36px}
+.section-head .num{grid-column:1/span 2;font-family:var(--mono);font-size:12px;letter-spacing:.18em;color:var(--ink-faint)}
+.section-head h2{grid-column:3/span 7;font-size:clamp(28px,4vw,52px);line-height:1.02;letter-spacing:-.02em;font-weight:700}
+.section-head .aside{grid-column:10/span 3;color:var(--ink-soft);font-size:14px;align-self:end}
+
+/* Specs ----------------------------------------------------- */
+.specs-body{display:grid;grid-template-columns:repeat(12,1fr);gap:clamp(20px,3vw,44px);padding-bottom:clamp(40px,6vw,80px)}
+.specs-diagram{grid-column:1/span 5;position:sticky;top:80px;align-self:start}
+.specs-diagram svg{width:100%;border:1px solid var(--rule);background:var(--bg-sunken);border-radius:4px}
+.spec-groups{grid-column:7/span 6;display:flex;flex-direction:column;gap:34px}
+.spec-group h3{font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid var(--rule-strong)}
+.spec-row{display:grid;grid-template-columns:1fr auto;gap:18px;padding:12px 0;border-bottom:1px solid var(--rule);align-items:baseline}
+.spec-row dt{color:var(--ink-soft);font-size:14px}
+.spec-row dd{margin:0;color:var(--ink);font-family:var(--mono);font-size:13px;text-align:right}
+.spec-row dd small{color:var(--ink-faint);font-size:11px}
+
+/* Configurator --------------------------------------------- */
+.cfg{background:var(--bg-sunken);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding-block:clamp(8px,1vw,16px)}
+.cfg-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:clamp(20px,3vw,48px);align-items:start;padding-block:clamp(24px,3vw,40px)}
+.cfg-stage{grid-column:1/span 6;position:relative;display:grid;place-items:center;min-height:480px;background:
+  radial-gradient(120% 80% at 50% 38%, color-mix(in srgb,var(--bg) 92%, transparent), transparent 70%);
+  border:1px solid var(--rule);border-radius:6px;overflow:hidden}
+.cfg-stage .plat{position:absolute;bottom:14%;left:50%;transform:translateX(-50%);width:62%;height:1px;background:linear-gradient(90deg,transparent,var(--rule-strong),transparent)}
+.cfg-stage .corner{position:absolute;font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-faint)}
+.cfg-stage .corner.tl{top:14px;left:16px}
+.cfg-stage .corner.tr{top:14px;right:16px}
+.cfg-stage .corner.bl{bottom:14px;left:16px}
+.cfg-stage .corner.br{bottom:14px;right:16px;color:var(--accent)}
+.cfg-stage .watch-stage{transition:opacity var(--t) var(--ease),transform var(--t) var(--ease);max-width:330px}
+.cfg-stage[data-swap="true"] .watch-stage{opacity:.25;transform:scale(.985)}
+.cfg-scan{position:absolute;left:0;right:0;top:0;height:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:0}
+.cfg-stage[data-swap="true"] .cfg-scan{animation:scan 0.5s var(--ease)}
+@keyframes scan{0%{opacity:.0;transform:translateY(0)}30%{opacity:.7}100%{opacity:0;transform:translateY(440px)}}
+
+.cfg-panel{grid-column:7/span 6}
+.cfg-panel h3{font-size:22px;font-weight:700;letter-spacing:-.01em;margin-bottom:4px}
+.cfg-panel .cfg-sub{color:var(--ink-soft);font-size:14px;margin-bottom:22px}
+.opt{border:none;margin:0 0 22px;padding:0}
+.opt > legend{display:flex;justify-content:space-between;align-items:baseline;width:100%;font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft);padding-bottom:8px;margin-bottom:10px;border-bottom:1px solid var(--rule)}
+.opt > legend .v{color:var(--ink);font-weight:600;letter-spacing:.04em;text-transform:none;font-size:12px}
+.swatches{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.swatches.cols-4{grid-template-columns:repeat(4,1fr)}
+.swatches.cols-3{grid-template-columns:repeat(3,1fr)}
+.swatch{position:relative;display:block;cursor:pointer}
+.swatch input{position:absolute;opacity:0;width:1px;height:1px;inset:auto}
+.chip{display:flex;align-items:center;gap:10px;padding:11px 12px;border:1px solid var(--rule-strong);border-radius:4px;background:var(--bg);transition:border-color var(--t-fast),background var(--t-fast),transform var(--t-fast),box-shadow var(--t-fast)}
+.chip .dot{width:16px;height:16px;border-radius:50%;background:var(--c,#888);flex:none;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
+.chip .t{display:flex;flex-direction:column;gap:1px;min-width:0}
+.chip .t b{font-size:13px;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chip .t small{font-family:var(--mono);font-size:10px;color:var(--ink-faint);letter-spacing:.04em}
+.swatch:hover .chip{border-color:var(--ink-2)}
+.swatch input:focus-visible + .chip{outline:2px solid var(--accent);outline-offset:2px}
+.swatch input:checked + .chip{border-color:var(--ink);background:var(--bg-elev);box-shadow:inset 0 0 0 1px var(--ink)}
+.swatch input:checked + .chip::after{content:"";position:absolute;top:8px;right:8px;width:6px;height:6px;border-radius:50%;background:var(--accent)}
+.swatch.is-disabled{cursor:not-allowed}
+.swatch.is-disabled .chip{opacity:.45;background:var(--bg-sunken)}
+.swatch.is-disabled .chip .dot{filter:grayscale(1)}
+.swatch.is-disabled:hover .chip{border-color:var(--rule-strong)}
+.swatch.is-disabled input:focus-visible + .chip{outline-color:var(--ink-faint)}
+
+.cfg-note{font-size:12.5px;color:var(--ink-soft);min-height:18px;margin:-6px 0 18px;display:flex;align-items:center;gap:8px;transition:color var(--t-fast)}
+.cfg-note[data-kind="error"]{color:var(--accent)}
+.cfg-note[data-kind="info"]{color:var(--ink-soft)}
+.cfg-note svg{width:14px;height:14px;flex:none}
+
+.cfg-summary{border-top:1px solid var(--rule);padding-top:18px;margin-top:6px;display:grid;grid-template-columns:1fr auto;gap:8px 16px;align-items:center}
+.price{display:flex;flex-direction:column;align-items:flex-end}
+.price small{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint)}
+.price b{font-size:30px;font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.price .was{font-size:12px;color:var(--ink-faint);text-decoration:line-through;font-variant-numeric:tabular-nums}
+.cfg-config{grid-column:1/-1;font-family:var(--mono);font-size:11px;letter-spacing:.05em;color:var(--ink-soft);padding-top:6px}
+.cfg-cta{grid-column:1/-1;margin-top:8px;display:flex;gap:10px;flex-wrap:wrap}
+.cfg .btn{flex:1;justify-content:center;min-height:50px}
+
+/* Gallery --------------------------------------------------- */
+.gallery-body{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;padding-bottom:clamp(48px,7vw,90px)}
+.tile{border:1px solid var(--rule);background:var(--bg);border-radius:4px;overflow:hidden;display:flex;flex-direction:column;transition:transform var(--t) var(--ease),box-shadow var(--t) var(--ease)}
+.tile:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
+.tile .frame{aspect-ratio:4/3;background:var(--bg-sunken);display:grid;place-items:center;border-bottom:1px solid var(--rule);position:relative;overflow:hidden}
+.tile .frame svg{width:78%;height:78%}
+.tile .cap{padding:14px 16px;display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.tile .cap .n{font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:var(--ink-faint)}
+.tile .cap .t{font-size:14px}
+.tile.span-2{grid-column:span 2}
+.tile.span-3{grid-column:span 3}
+.tile.span-4{grid-column:span 4}
+
+/* Footer ---------------------------------------------------- */
+.footer{border-top:1px solid var(--rule);background:var(--bg-sunken);padding-top:clamp(48px,7vw,84px)}
+.foot-top{display:grid;grid-template-columns:repeat(12,1fr);gap:clamp(20px,3vw,40px);padding-bottom:48px}
+.foot-brand{grid-column:1/span 4}
+.foot-brand .mark{font-size:34px;font-weight:700;letter-spacing:.02em}
+.foot-brand p{color:var(--ink-soft);max-width:34ch;margin-top:12px;font-size:14px}
+.foot-brand .addr{font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--ink-faint);margin-top:18px;line-height:1.7}
+.foot-col{grid-column:span 2}
+.foot-col h3,.foot-news h3{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-faint);margin:0 0 12px}
+.foot-col ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.foot-col a{color:var(--ink-2);font-size:14px;position:relative;width:fit-content}
+.foot-col a::after{content:"";position:absolute;left:0;right:100%;bottom:-2px;height:1px;background:var(--ink);transition:right var(--t) var(--ease)}
+.foot-col a:hover{color:var(--ink)}
+.foot-col a:hover::after{right:0}
+.foot-news{grid-column:10/span 3}
+.foot-news p{color:var(--ink-soft);font-size:13px;margin-bottom:14px}
+.form-field{position:relative}
+.form-field input{width:100%;background:var(--bg);border:1px solid var(--rule-strong);border-radius:4px;padding:13px 14px;font-size:14px;color:var(--ink);transition:border-color var(--t-fast),box-shadow var(--t-fast)}
+.form-field input::placeholder{color:var(--ink-faint)}
+.form-field input:focus{outline:none;border-color:var(--ink)}
+.form-field.has-error input{border-color:var(--accent)}
+.form-field.has-error input:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.form-msg{font-size:12px;margin-top:8px;min-height:16px;color:var(--ink-soft);display:flex;align-items:center;gap:6px}
+.form-msg[data-kind="error"]{color:var(--accent)}
+.form-msg[data-kind="ok"]{color:var(--good)}
+.form-msg svg{width:13px;height:13px;flex:none}
+.foot-news .btn{margin-top:12px;width:100%;justify-content:center;min-height:46px}
+.foot-news .form-success{font-size:13px;color:var(--good);display:flex;align-items:center;gap:8px}
+.form-success svg{width:15px;height:15px}
+
+.foot-bottom{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;padding:18px 0 28px;border-top:1px solid var(--rule);font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--ink-faint);text-transform:uppercase}
+.foot-bottom a{color:var(--ink-soft)}
+.foot-bottom a:hover{color:var(--ink)}
+.foot-bottom .legal{display:flex;gap:18px;flex-wrap:wrap}
+
+/* Toast ----------------------------------------------------- */
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,140%);z-index:120;background:var(--ink);color:var(--bg);padding:14px 18px;border-radius:8px;box-shadow:var(--shadow);display:flex;align-items:center;gap:12px;max-width:min(90vw,440px);transition:transform var(--t) var(--ease);font-size:13px}
+.toast[data-show="true"]{transform:translate(-50%,0)}
+.toast svg{width:18px;height:18px;color:var(--accent);flex:none}
+.toast b{font-weight:600}
+
+/* Reveal ---------------------------------------------------- */
+[data-reveal]{opacity:0;transform:translateY(14px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+[data-reveal].is-in{opacity:1;transform:none}
+[data-reveal][data-d="1"]{transition-delay:.06s}
+[data-reveal][data-d="2"]{transition-delay:.12s}
+[data-reveal][data-d="3"]{transition-delay:.18s}
+
+/* Responsive ------------------------------------------------ */
+@media (max-width:1024px){
+  .hero-copy{grid-column:1/span 7}
+  .hero-stage{grid-column:8/span 5}
+  .specs-diagram{position:static}
+  .cfg-stage{min-height:420px}
+}
+@media (max-width:880px){
+  .nav-links{display:none}
+  .hero-copy{grid-column:1/-1;padding-top:14px}
+  .hero-stage{grid-column:1/-1;min-height:360px;order:-1}
+  .section-head .num,.section-head h2,.section-head .aside{grid-column:1/-1}
+  .section-head .aside{max-width:54ch}
+  .specs-diagram{grid-column:1/-1}
+  .spec-groups{grid-column:1/-1}
+  .cfg-stage{grid-column:1/-1;min-height:380px}
+  .cfg-panel{grid-column:1/-1}
+  .gallery-body{grid-template-columns:repeat(4,1fr)}
+  .tile.span-4,.tile.span-3{grid-column:span 2}
+  .tile.span-2{grid-column:span 2}
+  .foot-brand,.foot-col,.foot-news{grid-column:1/-1}
+  .foot-col{grid-column:span 3}
+}
+@media (max-width:560px){
+  :root{--gut:18px}
+  .nav-row{gap:10px;height:54px}
+  .brand{font-size:16px}
+  .brand sup{display:none}
+  .icon-btn{padding:8px 10px}
+  .icon-btn > span:not(.bag-count){display:none}
+  .swatches,.swatches.cols-4,.swatches.cols-3{grid-template-columns:1fr 1fr}
+  .gallery-body{grid-template-columns:1fr 1fr;gap:10px}
+  .tile.span-4,.tile.span-3,.tile.span-2{grid-column:span 2}
+  .foot-col{grid-column:span 2}
+  .ticker-track{flex-direction:column;gap:6px;align-items:flex-start}
+  .ticker-track span + span{border-left:0}
+  .hero-specs{gap:10px 22px}
+  .cfg-summary{grid-template-columns:1fr;align-items:flex-start}
+  .price{align-items:flex-start}
+}
+@media (max-width:360px){
+  .hero h1{font-size:48px}
+  .tile{grid-column:1/-1!important}
+}
+
+/* Reduced motion ------------------------------------------- */
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+  [data-reveal]{opacity:1!important;transform:none!important}
+  .watch-stage{transform:none!important}
+  .cfg-stage[data-swap="true"] .watch-stage{opacity:1!important}
+  .cfg-scan{display:none}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="nav" role="banner">
+  <div class="wrap nav-row">
+    <a class="brand" href="#main" aria-label="FORM Atelier — home">FORM<sup>ATELIER</sup></a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="#watch-sec">The Watch</a>
+      <a href="#specs">Specifications</a>
+      <a href="#configure">Configure</a>
+      <a href="#details">Detail Studies</a>
+    </nav>
+    <div class="nav-spacer"></div>
+    <button class="icon-btn" id="themeToggle" type="button" aria-label="Switch colour scheme" aria-pressed="false">
+      <svg id="iconSun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/></svg>
+      <svg id="iconMoon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" hidden><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      <span aria-hidden="true">Theme</span>
+    </button>
+    <button class="icon-btn bag-btn" id="bagBtn" type="button" aria-label="Bag, 0 items">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7h12l-1 13H7L6 7z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>
+      <span>Bag</span>
+      <span class="bag-count" id="bagCount" aria-hidden="true">0</span>
+    </button>
+  </div>
+</header>
+
+<main id="main">
+  <!-- ===================== HERO ===================== -->
+  <section class="hero" id="watch-sec" aria-labelledby="heroTitle">
+    <div class="wrap">
+      <div class="hero-grid">
+        <div class="hero-meta" data-reveal>
+          <span class="seq">Issue 01 &mdash; Mechanical Studies</span>
+          <span class="seq">Lausanne · MMXXVI</span>
+        </div>
+
+        <div class="hero-copy">
+          <h1 id="heroTitle" data-reveal>
+            A watch,<br>
+            <span class="l2">stripped to</span><br>
+            <span class="l3 serif-it">its physics.</span>
+          </h1>
+          <p class="hero-lede" data-reveal data-d="1">
+            The FORM&nbsp;01 is a 38&ndash;42&nbsp;mm automatic, machined from a single
+            billet and regulated to &plusmn;4&nbsp;seconds a day. No ornament &mdash;
+            only the parts that earn their weight.
+          </p>
+          <div class="hero-specs" data-reveal data-d="2">
+            <div>Calibre<b>F.01 Automatic</b></div>
+            <div>Reserve<b>72 hours</b></div>
+            <div>Case<b>9.4 mm thin</b></div>
+          </div>
+          <div class="hero-cta" data-reveal data-d="2">
+            <a class="btn" href="#configure"><span class="btn-label">Configure yours</span>
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+            <a class="btn btn--ghost" href="#specs"><span class="btn-label">Read the datasheet</span></a>
+          </div>
+        </div>
+
+        <div class="hero-stage" data-reveal data-d="1">
+          <span class="dim-label left">&Oslash; <span id="dimSize">40</span>mm</span>
+          <span class="dim-label right"><span id="dimThick">9.4</span>mm thin</span>
+          <div class="watch-stage" id="heroWatch" aria-hidden="true"></div>
+        </div>
+
+        <div class="ticker" data-reveal>
+          <div class="ticker-track">
+            <span>Calibre F.01</span><span>28,800 vph</span><span>72h reserve</span>
+            <span>316L billet</span><span>Sapphire · AR</span><span>5 ATM</span>
+            <span>&plusmn;4 s/day</span><span>28 jewels</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== SPECS ===================== -->
+  <section class="specs" id="specs" aria-labelledby="specsTitle">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="num" data-reveal>§ 02</span>
+        <h2 id="specsTitle" data-reveal>A datasheet, not a brochure.<br><span class="serif-it" style="color:var(--ink-soft)">Every figure, accountable.</span></h2>
+        <p class="aside" data-reveal data-d="1">Independent chronometer-grade regulation. Numbers measured, not rounded.</p>
+      </div>
+
+      <div class="specs-body">
+        <div class="specs-diagram" data-reveal>
+          <svg viewBox="0 0 400 420" role="img" aria-labelledby="diaTitle diaDesc">
+            <title id="diaTitle">Movement anatomy</title>
+            <desc id="diaDesc">Annotated schematic of the FORM F.01 calibre.</desc>
+            <g fill="none" stroke="currentColor" stroke-width="1">
+              <circle cx="200" cy="200" r="150" stroke="var(--rule-strong)"/>
+              <circle cx="200" cy="200" r="108" stroke="var(--ink-faint)" stroke-dasharray="2 4"/>
+              <circle cx="200" cy="200" r="62" stroke="var(--ink-soft)"/>
+              <g stroke="var(--ink-faint)">
+                <line x1="200" y1="92" x2="200" y2="138"/><line x1="200" y1="262" x2="200" y2="308"/>
+                <line x1="92" y1="200" x2="138" y2="200"/><line x1="262" y1="200" x2="308" y2="200"/>
+                <line x1="124" y1="124" x2="156" y2="156"/><line x1="244" y1="244" x2="276" y2="276"/>
+                <line x1="276" y1="124" x2="244" y2="156"/><line x1="156" y1="244" x2="124" y2="276"/>
+              </g>
+              <circle cx="200" cy="200" r="6" fill="var(--accent)" stroke="none"/>
+            </g>
+            <!-- callouts -->
+            <g font-family="var(--mono)" font-size="10" letter-spacing="1" fill="var(--ink-soft)">
+              <line x1="200" y1="92" x2="200" y2="48" stroke="var(--rule-strong)"/>
+              <text x="206" y="44">01 · BALANCE / 4 Hz</text>
+              <line x1="308" y1="200" x2="356" y2="200" stroke="var(--rule-strong)"/>
+              <text x="318" y="196">02 · MAINSPRING</text>
+              <text x="318" y="208" fill="var(--ink-faint)">72h</text>
+              <line x1="124" y1="276" x2="64" y2="356" stroke="var(--rule-strong)"/>
+              <text x="40" y="372">03 · ROTOR · CERAMIC</text>
+              <line x1="276" y1="124" x2="350" y2="56" stroke="var(--rule-strong)"/>
+              <text x="288" y="48">04 · 28 JEWELS</text>
+            </g>
+          </svg>
+        </div>
+
+        <div class="spec-groups">
+          <div class="spec-group" data-reveal>
+            <h3>Movement</h3>
+            <dl>
+              <div class="spec-row"><dt>Calibre</dt><dd>F.01 · in-house automatic</dd></div>
+              <div class="spec-row"><dt>Frequency</dt><dd>28,800 vph <small>(4 Hz)</small></dd></div>
+              <div class="spec-row"><dt>Power reserve</dt><dd>72 h</dd></div>
+              <div class="spec-row"><dt>Jewels</dt><dd>28</dd></div>
+              <div class="spec-row"><dt>Regulation</dt><dd>&plusmn;4 s/day <small>chronometer</small></dd></div>
+            </dl>
+          </div>
+          <div class="spec-group" data-reveal data-d="1">
+            <h3>Case</h3>
+            <dl>
+              <div class="spec-row"><dt>Diameter</dt><dd>38 / 40 / 42 mm</dd></div>
+              <div class="spec-row"><dt>Thickness</dt><dd>9.4 mm</dd></div>
+              <div class="spec-row"><dt>Crystal</dt><dd>Sapphire, double-domed, AR</dd></div>
+              <div class="spec-row"><dt>Water resistance</dt><dd>5 ATM <small>(50 m)</small></dd></div>
+              <div class="spec-row"><dt>Caseback</dt><dd>Screw-down, sapphire display</dd></div>
+            </dl>
+          </div>
+          <div class="spec-group" data-reveal data-d="2">
+            <h3>Weight</h3>
+            <dl>
+              <div class="spec-row"><dt>38 mm · cordovan</dt><dd>62 g</dd></div>
+              <div class="spec-row"><dt>40 mm · cordovan</dt><dd>71 g</dd></div>
+              <div class="spec-row"><dt>42 mm · bracelet</dt><dd>118 g</dd></div>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== CONFIGURATOR ===================== -->
+  <section class="cfg" id="configure" aria-labelledby="cfgTitle">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="num" data-reveal>§ 03</span>
+        <h2 id="cfgTitle" data-reveal>Build it the way<br><span class="serif-it" style="color:var(--ink-soft)">you carry weight.</span></h2>
+        <p class="aside" data-reveal data-d="1">Four materials, four dials, four straps. Updates in real time &mdash; keyboard or pointer.</p>
+      </div>
+
+      <div class="cfg-grid">
+        <div class="cfg-stage" id="cfgStage" data-swap="false" data-reveal>
+          <span class="corner tl">Live preview</span>
+          <span class="corner tr" id="cfgPriceMini">&mdash;</span>
+          <span class="corner bl">FORM&nbsp;01</span>
+          <span class="corner br" id="cfgStatusMini">Ready</span>
+          <div class="watch-stage" id="cfgWatch" role="img" aria-label="FORM 01 preview"></div>
+          <span class="plat" aria-hidden="true"></span>
+          <span class="cfg-scan" aria-hidden="true"></span>
+        </div>
+
+        <div class="cfg-panel" data-reveal data-d="1">
+          <h3>Configure your FORM&nbsp;01</h3>
+          <p class="cfg-sub">Base reference &mdash; 40&nbsp;mm, Brushed Steel, Bone dial, Cordovan strap.</p>
+
+          <form id="cfgForm" novalidate>
+            <p class="sr-only" role="status" aria-live="polite" id="cfgLive"></p>
+            <fieldset class="opt" id="g-size">
+              <legend>Size <span class="v" data-out="size">40 mm</span></legend>
+              <div class="swatches cols-3">
+                <label class="swatch"><input type="radio" name="size" value="38"><span class="chip"><span class="t"><b>38 mm</b><small>+ $0</small></span></span></label>
+                <label class="swatch"><input type="radio" name="size" value="40" checked><span class="chip"><span class="t"><b>40 mm</b><small>+ $0</small></span></span></label>
+                <label class="swatch"><input type="radio" name="size" value="42"><span class="chip"><span class="t"><b>42 mm</b><small>+ $50</small></span></span></label>
+              </div>
+            </fieldset>
+
+            <fieldset class="opt" id="g-material">
+              <legend>Case material <span class="v" data-out="material">Brushed Steel</span></legend>
+              <div class="swatches cols-4" id="matSwatches">
+                <label class="swatch"><input type="radio" name="material" value="steel" checked><span class="chip" style="--c:#C7C9CD"><span class="t"><b>Steel</b><small>+$0</small></span></span></label>
+                <label class="swatch"><input type="radio" name="material" value="brass"><span class="chip" style="--c:#C9A35A"><span class="t"><b>Brass</b><small>+$400</small></span></span></label>
+                <label class="swatch"><input type="radio" name="material" value="dlc"><span class="chip" style="--c:#1C1C1E"><span class="t"><b>Black DLC</b><small>+$600</small></span></span></label>
+                <label class="swatch"><input type="radio" name="material" value="titanium"><span class="chip" style="--c:#8E8E93"><span class="t"><b>Titanium</b><small>+$500</small></span></span></label>
+                <label class="swatch is-disabled" title="Ceramic case — coming Q3 2026"><input type="radio" name="material" value="ceramic" disabled aria-disabled="true" tabindex="-1"><span class="chip" style="--c:#262626"><span class="t"><b>Ceramic</b><small>Q3 2026</small></span></span></label>
+              </div>
+            </fieldset>
+
+            <fieldset class="opt" id="g-dial">
+              <legend>Dial <span class="v" data-out="dial">Bone White</span></legend>
+              <div class="swatches cols-4">
+                <label class="swatch"><input type="radio" name="dial" value="bone" checked><span class="chip" style="--c:#ECE4D2"><span class="t"><b>Bone</b><small>+$0</small></span></span></label>
+                <label class="swatch"><input type="radio" name="dial" value="ink"><span class="chip" style="--c:#15130E"><span class="t"><b>Ink</b><small>+$0</small></span></span></label>
+                <label class="swatch"><input type="radio" name="dial" value="sage"><span class="chip" style="--c:#7E8E6E"><span class="t"><b>Sage</b><small>+$150</small></span></span></label>
+                <label class="swatch"><input type="radio" name="dial" value="oxblood"><span class="chip" style="--c:#5E2020"><span class="t"><b>Oxblood</b><small>+$200</small></span></span></label>
+              </div>
+            </fieldset>
+
+            <fieldset class="opt" id="g-strap">
+              <legend>Strap <span class="v" data-out="strap">Cordovan Leather</span></legend>
+              <div class="swatches cols-4" id="strapSwatches">
+                <label class="swatch"><input type="radio" name="strap" value="cordovan" checked><span class="chip" style="--c:#5E2622"><span class="t"><b>Cordovan</b><small>+$0</small></span></span></label>
+                <label class="swatch" id="strapBracelet"><input type="radio" name="strap" value="bracelet"><span class="chip"><span class="t"><b>Bracelet</b><small>+$350</small></span></span></label>
+                <label class="swatch"><input type="radio" name="strap" value="nato"><span class="chip" style="--c:#54592F"><span class="t"><b>NATO Olive</b><small>+$80</small></span></span></label>
+                <label class="swatch"><input type="radio" name="strap" value="rubber"><span class="chip" style="--c:#1A1A1A"><span class="t"><b>Rubber</b><small>+$120</small></span></span></label>
+              </div>
+            </fieldset>
+
+            <p class="cfg-note" id="cfgNote" data-kind="info" role="status" aria-live="polite"></p>
+
+            <div class="cfg-summary">
+              <div class="cfg-config" id="cfgConfig">Brushed Steel · Bone · Cordovan · 40 mm</div>
+              <div class="price">
+                <small>Total · incl. VAT</small>
+                <b id="cfgPrice">$2,400</b>
+              </div>
+              <div class="cfg-cta">
+                <button class="btn" type="button" id="addBag" data-loading="false">
+                  <span class="spin" aria-hidden="true"></span>
+                  <span class="btn-label">Add to bag</span>
+                </button>
+                <button class="btn btn--ghost" type="reset" id="resetCfg">Reset</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== GALLERY ===================== -->
+  <section class="gallery" id="details" aria-labelledby="galTitle">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="num" data-reveal>§ 04</span>
+        <h2 id="galTitle" data-reveal>Detail studies.<br><span class="serif-it" style="color:var(--ink-soft)">Five places the hand shows.</span></h2>
+        <p class="aside" data-reveal data-d="1">Drawn from production tooling, not rendered. Hover to lift.</p>
+      </div>
+
+      <div class="gallery-body">
+        <figure class="tile span-3" data-reveal>
+          <div class="frame">
+            <svg viewBox="0 0 200 150" aria-hidden="true">
+              <g fill="none" stroke="currentColor" stroke-width="1">
+                <rect x="70" y="40" width="60" height="70" rx="3"/>
+                <g stroke="var(--ink-faint)">
+                  <line x1="74" y1="48" x2="126" y2="48"/><line x1="74" y1="56" x2="126" y2="56"/>
+                  <line x1="74" y1="64" x2="126" y2="64"/><line x1="74" y1="72" x2="126" y2="72"/>
+                  <line x1="74" y1="80" x2="126" y2="80"/><line x1="74" y1="88" x2="126" y2="88"/>
+                  <line x1="74" y1="96" x2="126" y2="96"/><line x1="74" y1="104" x2="126" y2="104"/>
+                </g>
+                <circle cx="130" cy="75" r="20" stroke="var(--ink-soft)"/>
+                <circle cx="130" cy="75" r="6" fill="var(--accent)" stroke="none"/>
+              </g>
+            </svg>
+          </div>
+          <figcaption class="cap"><span class="n">01</span><span class="t"><b>The Crown</b> &mdash; <span class="serif-it">signed, knurled</span></span></figcaption>
+        </figure>
+
+        <figure class="tile span-3" data-reveal data-d="1">
+          <div class="frame">
+            <svg viewBox="0 0 200 150" aria-hidden="true">
+              <g fill="none" stroke="currentColor" stroke-width="1">
+                <path d="M30 110 L70 60 L86 66 L46 116 Z"/>
+                <path d="M70 60 L86 66" stroke="var(--accent)"/>
+                <g stroke="var(--ink-faint)" stroke-dasharray="2 3"><line x1="40" y1="120" x2="120" y2="120"/></g>
+                <path d="M90 110 L130 60 L146 66 L106 116 Z" stroke="var(--ink-faint)"/>
+              </g>
+            </svg>
+          </div>
+          <figcaption class="cap"><span class="n">02</span><span class="t"><b>The Lug</b> &mdash; <span class="serif-it">bevelled, 22 mm</span></span></figcaption>
+        </figure>
+
+        <figure class="tile span-2" data-reveal>
+          <div class="frame">
+            <svg viewBox="0 0 200 150" aria-hidden="true">
+              <g fill="none" stroke="currentColor" stroke-width="1">
+                <ellipse cx="100" cy="75" rx="70" ry="22"/>
+                <ellipse cx="100" cy="75" rx="46" ry="14"/>
+                <path d="M30 75 Q100 40 170 75" stroke="var(--accent)"/>
+                <line x1="100" y1="53" x2="100" y2="97"/>
+              </g>
+            </svg>
+          </div>
+          <figcaption class="cap"><span class="n">03</span><span class="t"><b>Bezel</b> &mdash; <span class="serif-it">polished</span></span></figcaption>
+        </figure>
+
+        <figure class="tile span-2" data-reveal data-d="1">
+          <div class="frame">
+            <svg viewBox="0 0 200 150" aria-hidden="true">
+              <defs><pattern id="sun" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" stroke="currentColor" stroke-width="1" opacity=".35"/></pattern></defs>
+              <rect x="30" y="30" width="140" height="90" fill="url(#sun)" stroke="var(--rule-strong)"/>
+              <g fill="none" stroke="currentColor"><circle cx="100" cy="75" r="30"/><circle cx="100" cy="75" r="6" fill="var(--accent)" stroke="none"/></g>
+            </svg>
+          </div>
+          <figcaption class="cap"><span class="n">04</span><span class="t"><b>Dial</b> &mdash; <span class="serif-it">sunray</span></span></figcaption>
+        </figure>
+
+        <figure class="tile span-2" data-reveal data-d="2">
+          <div class="frame">
+            <svg viewBox="0 0 200 150" aria-hidden="true">
+              <g fill="none" stroke="currentColor" stroke-width="1">
+                <path d="M100 30 L106 90 L100 120 L94 90 Z"/>
+                <circle cx="100" cy="75" r="6" stroke="var(--accent)" fill="none"/>
+                <line x1="100" y1="120" x2="100" y2="135" stroke="var(--accent)"/>
+              </g>
+            </svg>
+          </div>
+          <figcaption class="cap"><span class="n">05</span><span class="t"><b>The Hand</b> &mdash; <span class="serif-it">syringe</span></span></figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="footer" role="contentinfo">
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-brand" data-reveal>
+        <h2 class="mark">FORM</h2>
+        <p>An atelier of mechanical restraint. We make few objects, slowly, and answer for every gram of them.</p>
+        <p class="addr">FORM Atelier SA<br>Rue du Pré 14, 1003 Lausanne<br>Switzerland</p>
+      </div>
+      <nav class="foot-col" aria-label="Catalog" data-reveal data-d="1">
+        <h3>Catalog</h3>
+        <ul><li><a href="#watch-sec">FORM 01</a></li><li><a href="#configure">Straps</a></li><li><a href="#specs">Service plan</a></li><li><a href="#details">Gift card</a></li></ul>
+      </nav>
+      <nav class="foot-col" aria-label="Studio" data-reveal data-d="1">
+        <h3>Studio</h3>
+        <ul><li><a href="#specs">About</a></li><li><a href="#specs">The craft</a></li><li><a href="#details">Journal</a></li><li><a href="#details">Press</a></li></ul>
+      </nav>
+      <nav class="foot-col" aria-label="Support" data-reveal data-d="1">
+        <h3>Support</h3>
+        <ul><li><a href="#configure">Sizing guide</a></li><li><a href="#specs">Warranty</a></li><li><a href="#configure">Contact</a></li><li><a href="#specs">Shipping</a></li></ul>
+      </nav>
+      <div class="foot-news" data-reveal data-d="2">
+        <h3>Atelier letter</h3>
+        <p>Occasional notes on materials and process. No noise.</p>
+        <form id="newsForm" novalidate>
+          <div class="form-field" id="newsField">
+            <label class="sr-only" for="newsEmail">Email address</label>
+            <input id="newsEmail" name="email" type="email" placeholder="you@studio.com" autocomplete="email" aria-describedby="newsMsg">
+          </div>
+          <p class="form-msg" id="newsMsg" data-kind="" aria-live="polite"></p>
+          <button class="btn" type="submit" id="newsBtn" data-loading="false">
+            <span class="spin" aria-hidden="true"></span>
+            <span class="btn-label">Subscribe</span>
+          </button>
+        </form>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>&copy; 2026 FORM Atelier &mdash; Designed in Lausanne</span>
+      <div class="legal">
+        <a href="#main">Privacy</a><a href="#main">Terms</a><a href="#main">Imprint</a><a href="#main">Accessibility</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite" data-show="false">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+  <span id="toastMsg">Added.</span>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var $ = function(s,r){return (r||document).querySelector(s);};
+  var $$ = function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s));};
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var SVGNS = "http://www.w3.org/2000/svg";
+
+  /* ---------- watch data ---------- */
+  var MATERIALS = {
+    steel:   {name:"Brushed Steel", a:"#EDEFF2", b:"#9498A0", edge:"#6F7278", price:0},
+    brass:   {name:"Brass",          a:"#F0D9A6", b:"#9A7A37", edge:"#7A5E26", price:400},
+    dlc:     {name:"Black DLC",      a:"#3A3A3C", b:"#0A0A0B", edge:"#000000", price:600},
+    titanium:{name:"Titanium",       a:"#C2C4CA", b:"#787A80", edge:"#5C5E64", price:500},
+    ceramic: {name:"Ceramic",        a:"#262626", b:"#111111", edge:"#000000", price:0}
+  };
+  var DIALS = {
+    bone:    {name:"Bone White", fill:"#ECE4D2", text:"#15130E", dark:false, price:0},
+    ink:     {name:"Ink Black",   fill:"#15130E", text:"#ECE4D2", dark:true,  price:0},
+    sage:    {name:"Sage",        fill:"#7E8E6E", text:"#101608", dark:false, price:150},
+    oxblood: {name:"Oxblood",     fill:"#5E2020", text:"#ECE4D2", dark:true,  price:200}
+  };
+  var STRAPS = {
+    cordovan:{name:"Cordovan Leather", fill:"#5E2622", price:0},
+    bracelet:{name:"Steel Bracelet",   fill:"bracelet", price:350},
+    nato:    {name:"NATO Olive",       fill:"#54592F", price:80},
+    rubber:  {name:"Rubber Black",     fill:"#161616", price:120}
+  };
+  var SIZES = {38:{price:0},40:{price:0},42:{price:50}};
+  var BASE = 2400;
+
+  /* ---------- build watch SVG skeleton ---------- */
+  function buildWatch(root, u){
+    u = u || "";
+    root.innerHTML = "";
+    var svg = document.createElementNS(SVGNS,"svg");
+    svg.setAttribute("viewBox","0 0 400 600");
+    svg.setAttribute("preserveAspectRatio","xMidYMid meet");
+    svg.setAttribute("role","img");
+    svg.setAttribute("aria-hidden","true");
+    svg.innerHTML =
+      '<defs>'+
+        '<linearGradient id="'+u+'caseG" x1="0" y1="0" x2="1" y2="1">'+
+          '<stop id="'+u+'caseA" offset="0" stop-color="#EDEFF2"/>'+
+          '<stop id="'+u+'caseB" offset="1" stop-color="#9498A0"/>'+
+        '</linearGradient>'+
+        '<linearGradient id="'+u+'braceletG" x1="0" y1="0" x2="1" y2="0">'+
+          '<stop id="'+u+'brA" offset="0" stop-color="#EDEFF2"/>'+
+          '<stop id="'+u+'brB" offset=".5" stop-color="#9498A0"/>'+
+          '<stop id="'+u+'brC" offset="1" stop-color="#EDEFF2"/>'+
+        '</linearGradient>'+
+        '<radialGradient id="'+u+'dialG" cx=".5" cy=".42" r=".7">'+
+          '<stop id="'+u+'dialA" offset=".55" stop-color="#ECE4D2"/>'+
+          '<stop id="'+u+'dialB" offset="1" stop-color="#D8CFB8"/>'+
+        '</radialGradient>'+
+        '<radialGradient id="'+u+'vignG" cx=".5" cy=".5" r=".5">'+
+          '<stop offset=".7" stop-color="#000" stop-opacity="0"/>'+
+          '<stop offset="1" stop-color="#000" stop-opacity=".18"/>'+
+        '</radialGradient>'+
+      '</defs>'+
+      '<ellipse cx="200" cy="556" rx="120" ry="14" fill="rgba(24,22,18,.16)"/>'+
+      '<g class="strapTop"></g>'+
+      '<g class="strapBot"></g>'+
+      '<rect x="132" y="150" width="22" height="40" rx="4" fill="url(#'+u+'caseG)"/>'+
+      '<rect x="246" y="150" width="22" height="40" rx="4" fill="url(#'+u+'caseG)"/>'+
+      '<rect x="132" y="370" width="22" height="40" rx="4" fill="url(#'+u+'caseG)"/>'+
+      '<rect x="246" y="370" width="22" height="40" rx="4" fill="url(#'+u+'caseG)"/>'+
+      '<circle class="caseOuter" cx="200" cy="280" r="156" fill="url(#'+u+'caseG)" stroke="#000" stroke-opacity=".15" stroke-width="1"/>'+
+      '<circle class="bezel" cx="200" cy="280" r="146" fill="none" stroke="#000" stroke-opacity=".12" stroke-width="1"/>'+
+      '<circle class="dial" cx="200" cy="280" r="134" fill="url(#'+u+'dialG)"/>'+
+      '<circle cx="200" cy="280" r="134" fill="url(#'+u+'vignG)"/>'+
+      '<g class="markers"></g>'+
+      '<g class="dialText" font-family="Helvetica Neue, Arial, sans-serif" text-anchor="middle"></g>'+
+      '<g class="hands">' +
+        '<g class="handHour"><rect x="196.5" y="206" width="7" height="82" rx="3"/></g>'+
+        '<g class="handMin"><rect x="197.5" y="166" width="5" height="122" rx="2.5"/></g>'+
+        '<g class="handSec"><rect x="199.2" y="156" width="1.6" height="138"/><rect x="197.5" y="280" width="5" height="34" rx="2.5"/></g>'+
+        '<circle class="cap" cx="200" cy="280" r="5.5"/>'+
+      '</g>';
+    root.appendChild(svg);
+
+    // generate 60 minute ticks
+    var markers = svg.querySelector(".markers");
+    var cx=200, cy=280;
+    for (var i=0;i<60;i++){
+      var a = i*(Math.PI/30);
+      var hour = (i%5===0);
+      var r1 = hour?112:120, r2 = 130;
+      var x1=cx+r1*Math.sin(a), y1=cy-r1*Math.cos(a);
+      var x2=cx+r2*Math.sin(a), y2=cy-r2*Math.cos(a);
+      var l = document.createElementNS(SVGNS,"line");
+      l.setAttribute("x1",x1);l.setAttribute("y1",y1);
+      l.setAttribute("x2",x2);l.setAttribute("y2",y2);
+      l.setAttribute("stroke","#000");
+      l.setAttribute("stroke-width", hour?3:1);
+      l.setAttribute("stroke-opacity", hour?.85:.4);
+      l.setAttribute("stroke-linecap","round");
+      markers.appendChild(l);
+    }
+    // dial text
+    var dt = svg.querySelector(".dialText");
+    dt.innerHTML =
+      '<text class="dtLogo" x="200" y="222" font-size="17" font-weight="700" letter-spacing="3">FORM</text>'+
+      '<text class="dtSub" x="200" y="236" font-size="6" letter-spacing="2.4">AUTOMATIC</text>'+
+      '<text class="dtCal" x="200" y="352" font-size="7" letter-spacing="2">F.01 &middot; SWISS</text>';
+    svg._u = u;
+    return svg;
+  }
+
+  /* ---------- apply config to a watch svg ---------- */
+  function applyWatch(svg, cfg){
+    var u = svg._u || "";
+    var m = MATERIALS[cfg.material], d = DIALS[cfg.dial], s = STRAPS[cfg.strap];
+    // case gradient
+    svg.querySelector("#"+u+"caseA").setAttribute("stop-color", m.a);
+    svg.querySelector("#"+u+"caseB").setAttribute("stop-color", m.b);
+    svg.querySelector(".bezel").setAttribute("stroke", m.edge);
+    // dial
+    svg.querySelector("#"+u+"dialA").setAttribute("stop-color", d.fill);
+    svg.querySelector("#"+u+"dialB").setAttribute("stop-color", shade(d.fill, d.dark?-8:14));
+    // markers + text color
+    var mc = svg.querySelector(".markers");
+    for (var i=0;i<mc.children.length;i++){
+      mc.children[i].setAttribute("stroke", d.text);
+    }
+    svg.querySelector(".dtLogo").setAttribute("fill", d.text);
+    svg.querySelector(".dtSub").setAttribute("fill", shade(d.fill, d.dark?40:-30));
+    svg.querySelector(".dtCal").setAttribute("fill", shade(d.fill, d.dark?30:-25));
+    // strap
+    var strapTop = svg.querySelector(".strapTop");
+    var strapBot = svg.querySelector(".strapBot");
+    strapTop.innerHTML=""; strapBot.innerHTML="";
+    var strapFill = s.fill==="bracelet" ? ("url(#"+u+"braceletG)") : s.fill;
+    if (s.fill==="bracelet"){
+      // match bracelet gradient to case material
+      svg.querySelector("#"+u+"brA").setAttribute("stop-color", m.a);
+      svg.querySelector("#"+u+"brB").setAttribute("stop-color", m.b);
+      svg.querySelector("#"+u+"brC").setAttribute("stop-color", m.a);
+    }
+    var tw = 96, taper=18;
+    // top strap
+    strapTop.appendChild(poly([[200-tw/2,150],[200+tw/2,150],[200+tw/2+taper,30],[200-tw/2-taper,30]], strapFill));
+    // link lines for bracelet
+    if (s.fill==="bracelet"){
+      for (var ly=40; ly<150; ly+=16){
+        strapTop.appendChild(line(200-tw/2-2, ly, 200+tw/2+2, ly, m.edge, .4, 1));
+      }
+    }
+    strapBot.appendChild(poly([[200-tw/2,410],[200+tw/2,410],[200+tw/2+taper,530],[200-tw/2-taper,530]], strapFill));
+    if (s.fill==="bracelet"){
+      for (var by=420; by<530; by+=16){
+        strapBot.appendChild(line(200-tw/2-2, by, 200+tw/2+2, by, m.edge, .4, 1));
+      }
+    }
+    // stitching for leather/rubber/nato
+    if (s.fill!=="bracelet"){
+      var stitch = shade(s.fill, 35);
+      strapTop.appendChild(line(200-tw/2+6,150,200-tw/2+6+taper,30, stitch, .9, .8));
+      strapTop.appendChild(line(200+tw/2-6,150,200+tw/2-6+taper,30, stitch, .9, .8));
+      strapBot.appendChild(line(200-tw/2+6,410,200-tw/2+6+taper,530, stitch, .9, .8));
+      strapBot.appendChild(line(200+tw/2-6,410,200+tw/2-6+taper,530, stitch, .9, .8));
+    }
+    // hands
+    var handCol = d.text;
+    svg.querySelector(".handHour rect").setAttribute("fill", handCol);
+    svg.querySelector(".handMin rect").setAttribute("fill", handCol);
+    var sec = svg.querySelectorAll(".handSec rect");
+    sec[0].setAttribute("fill", "#B23A1E");
+    sec[1].setAttribute("fill", "#B23A1E");
+    svg.querySelector(".cap").setAttribute("fill", handCol);
+    // scale hands/cluster by case size
+    var sc = cfg.size/40;
+    svg.querySelector(".hands").setAttribute("transform","translate(200 280) scale("+sc+") translate(-200 -280)");
+  }
+  function poly(pts, fill){
+    var p=document.createElementNS(SVGNS,"polygon");
+    p.setAttribute("points", pts.map(function(a){return a.join(",");}).join(" "));
+    p.setAttribute("fill", fill);
+    return p;
+  }
+  function line(x1,y1,x2,y2,stroke,op,w){
+    var l=document.createElementNS(SVGNS,"line");
+    l.setAttribute("x1",x1);l.setAttribute("y1",y1);l.setAttribute("x2",x2);l.setAttribute("y2",y2);
+    l.setAttribute("stroke",stroke);l.setAttribute("stroke-opacity",op);l.setAttribute("stroke-width",w||1);
+    l.setAttribute("stroke-dasharray","2 4");
+    return l;
+  }
+  function shade(hex, amt){
+    // hex #rrggbb -> adjust lightness by amt (-100..100)
+    var c = hex.replace("#","");
+    if (c.length===3){c=c.split("").map(function(x){return x+x;}).join("");}
+    var r=parseInt(c.substr(0,2),16),g=parseInt(c.substr(2,2),16),b=parseInt(c.substr(4,2),16);
+    var f = function(v){ v=Math.round(v + amt*2.55); return Math.max(0,Math.min(255,v)); };
+    var h = function(v){v=f(v);return ("0"+v.toString(16)).slice(-2);};
+    return "#"+h(r)+h(g)+h(b);
+  }
+
+  /* ---------- live hands ---------- */
+  function tickHands(svgList){
+    if (reduce) { setHands(svgList, 10, 10, 30); return; }
+    var now = new Date();
+    setHands(svgList, now.getHours(), now.getMinutes(), now.getSeconds()+now.getMilliseconds()/1000);
+  }
+  function setHands(svgList, h, m, s){
+    var ha = ((h%12)+m/60)*30;
+    var ma = m*6 + s/10;
+    var sa = s*6;
+    svgList.forEach(function(svg){
+      var cx=200, cy=280;
+      svg.querySelector(".handHour").setAttribute("transform","rotate("+ha+" "+cx+" "+cy+")");
+      svg.querySelector(".handMin").setAttribute("transform","rotate("+ma+" "+cx+" "+cy+")");
+      svg.querySelector(".handSec").setAttribute("transform","rotate("+sa+" "+cx+" "+cy+")");
+    });
+  }
+
+  /* ---------- configurator ---------- */
+  var heroRoot = $("#heroWatch"), cfgRoot = $("#cfgWatch");
+  var heroSVG = buildWatch(heroRoot, "h"), cfgSVG = buildWatch(cfgRoot, "c");
+  var svgList = [heroSVG, cfgSVG];
+  var cfg = {material:"steel", dial:"bone", strap:"cordovan", size:40};
+  var bagCount = 0;
+
+  function price(){
+    return BASE + MATERIALS[cfg.material].price + DIALS[cfg.dial].price + STRAPS[cfg.strap].price + SIZES[cfg.size].price;
+  }
+  function money(n){return "$"+n.toLocaleString("en-US");}
+
+  function render(opts){
+    opts = opts||{};
+    applyWatch(heroSVG, cfg); applyWatch(cfgSVG, cfg);
+    // mini dims
+    $("#dimSize").textContent = cfg.size;
+    // outputs
+    setText('[data-out="material"]', MATERIALS[cfg.material].name);
+    setText('[data-out="dial"]', DIALS[cfg.dial].name);
+    setText('[data-out="strap"]', STRAPS[cfg.strap].name);
+    setText('[data-out="size"]', cfg.size+" mm");
+    $("#cfgConfig").textContent =
+      MATERIALS[cfg.material].name+" · "+DIALS[cfg.dial].name+" · "+STRAPS[cfg.strap].name+" · "+cfg.size+" mm";
+    var p = price();
+    $("#cfgPrice").textContent = money(p);
+    $("#cfgPriceMini").textContent = money(p);
+    var lv = $("#cfgLive");
+    if (lv) lv.textContent = MATERIALS[cfg.material].name+" case, "+DIALS[cfg.dial].name+" dial, "+STRAPS[cfg.strap].name+", "+cfg.size+" millimetres. Total "+money(p)+".";
+    // swap animation
+    if (!reduce && !opts.instant){
+      var stage = $("#cfgStage");
+      stage.setAttribute("data-swap","true");
+      setTimeout(function(){stage.setAttribute("data-swap","false");}, 460);
+      $("#cfgStatusMini").textContent = "Updating";
+      setTimeout(function(){$("#cfgStatusMini").textContent="Ready";},460);
+    }
+  }
+  function setText(sel, v){var e=$(sel); if(e) e.textContent=v;}
+
+  function updateAvailability(){
+    // Bracelet requires >=40mm
+    var bracelet = $("#strapBracelet");
+    var inp = bracelet.querySelector("input");
+    var disable = (cfg.size === 38);
+    bracelet.classList.toggle("is-disabled", disable);
+    inp.disabled = disable;
+    inp.setAttribute("aria-disabled", disable?"true":"false");
+    if (disable && inp.checked){
+      var cordovan = $('input[name="strap"][value="cordovan"]');
+      cordovan.checked = true;
+      cfg.strap = "cordovan";
+    }
+    var note = $("#cfgNote");
+    if (disable){
+      note.setAttribute("data-kind","info");
+      note.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16v.5" stroke-linecap="round"/></svg> The steel bracelet needs a 40&nbsp;mm case or larger.';
+    } else {
+      note.innerHTML = "";
+    }
+  }
+
+  function readForm(){
+    $$('input[name="material"]').forEach(function(i){if(i.checked) cfg.material=i.value;});
+    $$('input[name="dial"]').forEach(function(i){if(i.checked) cfg.dial=i.value;});
+    $$('input[name="strap"]').forEach(function(i){if(i.checked) cfg.strap=i.value;});
+    $$('input[name="size"]').forEach(function(i){if(i.checked) cfg.size=parseInt(i.value,10);});
+  }
+
+  $("#cfgForm").addEventListener("change", function(e){
+    var t = e.target;
+    if (t.name === "size"){ cfg.size = parseInt(t.value,10); updateAvailability(); }
+    else if (t.name === "material"){ cfg.material = t.value; }
+    else if (t.name === "dial"){ cfg.dial = t.value; }
+    else if (t.name === "strap"){ cfg.strap = t.value; }
+    render();
+  });
+
+  $("#resetCfg").addEventListener("click", function(){
+    cfg = {material:"steel", dial:"bone", strap:"cordovan", size:40};
+    $('input[name="material"][value="steel"]').checked = true;
+    $('input[name="dial"][value="bone"]').checked = true;
+    $('input[name="strap"][value="cordovan"]').checked = true;
+    $('input[name="size"][value="40"]').checked = true;
+    updateAvailability();
+    render({instant:true});
+  });
+
+  // init
+  updateAvailability();
+  readForm();
+  render({instant:true});
+
+  /* hands live tick */
+  tickHands(svgList);
+  if (!reduce){ setInterval(function(){tickHands(svgList);}, 1000); }
+
+  /* ---------- add to bag ---------- */
+  var addBtn = $("#addBag");
+  addBtn.addEventListener("click", function(){
+    if (addBtn.getAttribute("data-loading")==="true") return;
+    addBtn.setAttribute("data-loading","true");
+    addBtn.disabled = true;
+    setTimeout(function(){
+      addBtn.setAttribute("data-loading","false");
+      addBtn.disabled = false;
+      bagCount += 1;
+      var bc = $("#bagCount"); bc.textContent = bagCount;
+      $("#bagBtn").setAttribute("aria-label","Bag, "+bagCount+" item"+(bagCount===1?"":"s"));
+      showToast("Added — "+MATERIALS[cfg.material].name+", "+DIALS[cfg.dial].name+" dial ("+money(price())+")");
+    }, 850);
+  });
+
+  /* ---------- toast ---------- */
+  var toastTimer;
+  function showToast(msg){
+    var t = $("#toast"); $("#toastMsg").innerHTML = msg;
+    t.setAttribute("data-show","true");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){t.setAttribute("data-show","false");}, 3400);
+  }
+
+  /* ---------- newsletter form (empty/loading/error/success) ---------- */
+  var newsForm = $("#newsForm"), newsBtn = $("#newsBtn");
+  var newsField = $("#newsField"), newsMsg = $("#newsMsg"), newsEmail = $("#newsEmail");
+  newsForm.addEventListener("submit", function(e){
+    e.preventDefault();
+    var v = newsEmail.value.trim();
+    var valid = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
+    if (!valid){
+      newsField.classList.add("has-error");
+      newsMsg.setAttribute("data-kind","error");
+      newsMsg.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v6M12 16.5v.5" stroke-linecap="round"/></svg> Please enter a valid email address.';
+      newsEmail.setAttribute("aria-invalid","true");
+      newsEmail.focus();
+      return;
+    }
+    newsField.classList.remove("has-error");
+    newsEmail.removeAttribute("aria-invalid");
+    newsMsg.setAttribute("data-kind","");
+    newsMsg.textContent = "";
+    newsBtn.setAttribute("data-loading","true"); newsBtn.disabled = true;
+    setTimeout(function(){
+      newsBtn.setAttribute("data-loading","false"); newsBtn.disabled=false;
+      newsForm.innerHTML = '<p class="form-success"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Welcome. First letter lands next quarter.</p>';
+    }, 900);
+  });
+  newsEmail.addEventListener("input", function(){
+    if (newsField.classList.contains("has-error")){
+      newsField.classList.remove("has-error");
+      newsMsg.setAttribute("data-kind","");
+      newsMsg.textContent="";
+      newsEmail.removeAttribute("aria-invalid");
+    }
+  });
+
+  /* ---------- theme toggle ---------- */
+  var root = document.documentElement;
+  var toggle = $("#themeToggle");
+  function syncToggle(){
+    var dark = root.getAttribute("data-theme")==="dark" ||
+      (!root.getAttribute("data-theme") && matchMedia("(prefers-color-scheme: dark)").matches);
+    toggle.setAttribute("aria-pressed", dark?"true":"false");
+    $("#iconSun").hidden = !dark;
+    $("#iconMoon").hidden = dark;
+  }
+  syncToggle();
+  toggle.addEventListener("click", function(){
+    var cur = root.getAttribute("data-theme");
+    var sysDark = matchMedia("(prefers-color-scheme: dark)").matches;
+    var isDark = cur ? cur==="dark" : sysDark;
+    var next = isDark ? "light" : "dark";
+    root.setAttribute("data-theme", next);
+    try{ localStorage.setItem("form-theme", next); }catch(e){}
+    syncToggle();
+  });
+  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", syncToggle);
+
+  /* ---------- reveal on scroll ---------- */
+  if ("IntersectionObserver" in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if (en.isIntersecting){ en.target.classList.add("is-in"); io.unobserve(en.target); }
+      });
+    }, {rootMargin:"0px 0px -8% 0px", threshold:.08});
+    $$("[data-reveal]").forEach(function(el){ io.observe(el); });
+  } else {
+    $$("[data-reveal]").forEach(function(el){ el.classList.add("is-in"); });
+  }
+
+  /* ---------- gentle parallax on hero watch ---------- */
+  if (!reduce){
+    var stage = $("#heroWatch");
+    var ticking = false;
+    window.addEventListener("scroll", function(){
+      if (!ticking){
+        window.requestAnimationFrame(function(){
+          var y = window.scrollY || window.pageYOffset;
+          if (y < 900 && stage){
+            stage.style.transform = "translateY(" + (y*0.04).toFixed(1) + "px)";
+          }
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }, {passive:true});
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# Run the compiled solution, reading one test from stdin.
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+if [ ! -x "$DIR/sol" ]; then
+  "$DIR/build.sh" >&2
+fi
+exec "$DIR/sol"

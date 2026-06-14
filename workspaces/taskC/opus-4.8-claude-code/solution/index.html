@@ -1,0 +1,1078 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>FORM — Halo 01 · Modular Task Lamp</title>
+<meta name="description" content="Halo 01 by FORM — a modular task lamp drawn as a single continuous line of light. Configure material and anodised accent; engineered to the millimetre, built to be opened.">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#efe9dc" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#15140f" media="(prefers-color-scheme: dark)">
+<style>
+/* ============================================================
+   FORM — Halo 01
+   Design tokens
+   ------------------------------------------------------------
+   Type : self-hosting-free, system stacks only
+   Grid : 12-col editorial, asymmetric hero
+   Colour: warm "bone" paper + ink, single terracotta accent
+           (deliberately NOT a default framework blue)
+   ============================================================ */
+:root{
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Hoefler Text",Georgia,"Times New Roman",serif;
+  --sans:ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --mono:ui-monospace,"SF Mono","SFMono-Regular",Menlo,Consolas,"Liberation Mono",monospace;
+
+  /* light / paper */
+  --bg:#efe9dc;
+  --bg-2:#e7e0d0;
+  --surface:#f6f2e9;
+  --surface-2:#efe9da;
+  --ink:#1b1a14;
+  --ink-soft:#5e5a4c;
+  --ink-faint:#6e6955;
+  --line:#d3ccba;
+  --line-strong:#bcb29b;
+  --accent:#a8431d;
+  --accent-soft:#d98a5f;
+  --accent-ink:#fbf4ea;
+  --good:#4e6b46;
+  --bad:#a23a2c;
+  --shadow:rgba(40,34,20,.16);
+
+  --maxw:1320px;
+  --pad:clamp(20px,5vw,72px);
+  --r:14px;
+
+  --fs-display:clamp(2.6rem, 1.1rem + 6.4vw, 6rem);
+  --fs-h2:clamp(1.7rem, 1.1rem + 2.6vw, 3rem);
+  --fs-h3:clamp(1.12rem,.95rem + .85vw,1.5rem);
+  --fs-lead:clamp(1.04rem,.98rem + .5vw,1.3rem);
+  --fs-sm:.86rem;
+  --fs-cap:.74rem;
+
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#15140f;
+    --bg-2:#100f0b;
+    --surface:#1e1c16;
+    --surface-2:#26241c;
+    --ink:#ece6d6;
+    --ink-soft:#a59e8c;
+    --ink-faint:#9a937e;
+    --line:#34312a;
+    --line-strong:#46423a;
+    --accent:#d8743f;
+    --accent-soft:#a85831;
+    --accent-ink:#17130d;
+    --good:#8fb07f;
+    --bad:#e08a6f;
+    --shadow:rgba(0,0,0,.5);
+  }
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+@media (prefers-reduced-motion:no-preference){
+  html{scroll-behavior:smooth}
+}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--sans);
+  font-size:1rem;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+  overflow-x:clip;
+}
+img,svg{max-width:100%;display:block}
+h1,h2,h3,h4,p{margin:0}
+a{color:inherit}
+:focus{outline:none}
+:focus-visible{outline:2.5px solid var(--accent);outline-offset:3px;border-radius:3px}
+:where(:focus:not(:focus-visible)){outline:none}
+::selection{background:var(--accent);color:var(--accent-ink)}
+
+.shell{max-width:var(--maxw);margin-inline:auto;padding-inline:var(--pad)}
+.kicker{
+  font-family:var(--mono);
+  font-size:var(--fs-cap);
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:var(--ink-soft);
+}
+.vh{
+  position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+  overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0;
+}
+.skip{
+  position:absolute;left:var(--pad);top:8px;z-index:200;
+  transform:translateY(-160%);
+  background:var(--ink);color:var(--bg);
+  padding:.6em 1em;border-radius:8px;font-size:var(--fs-sm);
+  transition:transform .2s var(--ease);
+}
+.skip:focus{transform:translateY(0)}
+
+/* ---------- Header ---------- */
+.masthead{
+  position:sticky;top:0;z-index:100;
+  background:color-mix(in oklab,var(--bg) 86%, transparent);
+  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+  border-bottom:1px solid transparent;
+  transition:border-color .3s var(--ease),background .3s var(--ease);
+}
+.masthead.is-stuck{border-bottom-color:var(--line)}
+.masthead__in{
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;
+  min-height:64px;
+}
+.brand{
+  font-family:var(--sans);font-weight:600;
+  letter-spacing:.42em;font-size:1.05rem;text-decoration:none;
+  padding-left:.42em;
+}
+.brand b{font-weight:600}
+.nav{display:flex;align-items:center;gap:clamp(.7rem,2.4vw,1.9rem)}
+.nav__links{display:none;gap:clamp(.9rem,2.4vw,1.9rem)}
+.nav__links a{
+  text-decoration:none;font-size:var(--fs-sm);color:var(--ink-soft);
+  position:relative;padding:.3em 0;
+  transition:color .2s var(--ease);
+}
+.nav__links a::after{
+  content:"";position:absolute;left:0;right:100%;bottom:0;height:1.5px;
+  background:var(--accent);transition:right .28s var(--ease);
+}
+.nav__links a:hover,.nav__links a:focus-visible{color:var(--ink)}
+.nav__links a:hover::after,.nav__links a:focus-visible::after{right:0}
+@media (min-width:760px){.nav__links{display:flex}}
+.bag{
+  display:inline-flex;align-items:center;gap:.5em;
+  text-decoration:none;font-size:var(--fs-sm);color:var(--ink);
+  border:1px solid var(--line-strong);border-radius:999px;
+  padding:.42em .85em;
+  transition:border-color .2s var(--ease),background .2s var(--ease),color .2s var(--ease);
+}
+.bag:hover,.bag:focus-visible{border-color:var(--ink);background:var(--surface)}
+.bag:active{transform:translateY(1px)}
+.bag__count{
+  font-family:var(--mono);font-size:.72rem;
+  min-width:1.5em;height:1.5em;border-radius:999px;
+  display:inline-grid;place-items:center;
+  background:var(--bg-2);color:var(--ink-soft);
+  transition:background .2s var(--ease),color .2s var(--ease);
+}
+.bag.is-filled .bag__count{background:var(--accent);color:var(--accent-ink)}
+
+/* ---------- Buttons ---------- */
+.btn{
+  --b:var(--ink);--f:var(--bg);
+  font:inherit;font-size:var(--fs-sm);font-weight:500;
+  display:inline-flex;align-items:center;justify-content:center;gap:.6em;
+  padding:.92em 1.5em;border-radius:999px;
+  border:1px solid var(--b);background:var(--b);color:var(--f);
+  text-decoration:none;cursor:pointer;
+  transition:transform .15s var(--ease),box-shadow .2s var(--ease),
+             background .2s var(--ease),border-color .2s var(--ease),opacity .2s var(--ease);
+}
+.btn:hover{box-shadow:0 10px 24px -12px var(--shadow);transform:translateY(-1px)}
+.btn:active{transform:translateY(0) scale(.99)}
+.btn[disabled],.btn[aria-disabled="true"]{
+  cursor:not-allowed;opacity:.5;box-shadow:none;transform:none;
+}
+.btn--ghost{--b:var(--line-strong);background:transparent;color:var(--ink)}
+.btn--ghost:hover{--b:var(--ink);background:transparent}
+.btn--accent{--b:var(--accent);--f:var(--accent-ink)}
+
+/* ---------- Hero ---------- */
+.hero{position:relative;padding-block:clamp(34px,7vw,80px) clamp(56px,10vw,128px);overflow:clip}
+.hero__grid{
+  display:grid;grid-template-columns:1fr;gap:clamp(28px,5vw,40px);
+  align-items:start;position:relative;
+}
+.hero__edition{
+  display:flex;align-items:center;gap:1rem;
+  border-top:1px solid var(--line-strong);padding-top:.9rem;
+}
+.hero__edition .line{flex:1;height:1px;background:var(--line)}
+.hero__title{
+  font-family:var(--serif);font-weight:400;
+  font-size:var(--fs-display);line-height:.96;letter-spacing:-.012em;
+  margin-top:clamp(18px,3vw,30px);
+  max-width:14ch;
+  text-wrap:balance;
+}
+.hero__title em{font-style:italic;color:var(--accent)}
+.hero__lede{
+  font-family:var(--serif);font-size:var(--fs-lead);line-height:1.45;
+  color:var(--ink-soft);max-width:42ch;margin-top:1.4rem;
+}
+.hero__meta{
+  display:flex;flex-wrap:wrap;gap:clamp(1.4rem,4vw,2.6rem);
+  margin-top:2rem;
+}
+.stat{display:flex;flex-direction:column;gap:.15rem}
+.stat b{font-family:var(--mono);font-size:1.35rem;font-weight:500;letter-spacing:-.01em}
+.stat span{font-size:var(--fs-cap);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint)}
+.hero__cta{display:flex;flex-wrap:wrap;gap:.8rem;margin-top:2.3rem}
+
+.hero__stage{
+  position:relative;
+  align-self:center;
+  display:grid;place-items:center;
+  min-width:0;
+}
+.hero__index{
+  position:absolute;z-index:0;
+  font-family:var(--serif);font-style:italic;
+  font-size:clamp(8rem,26vw,20rem);line-height:1;
+  color:var(--line-strong);opacity:.5;
+  top:-.18em;right:-.02em;pointer-events:none;user-select:none;
+}
+.hero__art{position:relative;z-index:1;width:min(100%,440px);will-change:transform}
+.vlabel{
+  position:absolute;left:-.2rem;top:38%;z-index:2;
+  writing-mode:vertical-rl;transform:rotate(180deg);
+  font-family:var(--mono);font-size:var(--fs-cap);letter-spacing:.32em;
+  text-transform:uppercase;color:var(--ink-faint);
+  display:none;
+}
+@media (min-width:980px){
+  .hero__grid{grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr)}
+  .hero__copy{padding-top:clamp(10px,2vw,28px)}
+  .hero__stage{align-self:stretch}
+  .vlabel{display:block}
+}
+
+/* lamp svg colour transitions */
+.lamp [data-fill]{transition:fill .55s var(--ease)}
+
+/* ---------- Section frame ---------- */
+.section{padding-block:clamp(64px,11vw,144px);scroll-margin-top:84px}
+.section--alt{background:var(--bg-2)}
+.sechead{
+  display:grid;gap:1.1rem;
+  grid-template-columns:1fr;align-items:end;
+  border-bottom:1px solid var(--line-strong);padding-bottom:1.2rem;margin-bottom:clamp(34px,6vw,64px);
+}
+.sechead__num{font-family:var(--mono);font-size:var(--fs-cap);letter-spacing:.18em;color:var(--accent)}
+.sechead h2{font-family:var(--serif);font-weight:400;font-size:var(--fs-h2);line-height:1.02;letter-spacing:-.01em}
+.sechead p{color:var(--ink-soft);max-width:46ch;font-size:var(--fs-lead);font-family:var(--serif)}
+@media (min-width:820px){
+  .sechead{grid-template-columns:1.2fr .8fr;gap:clamp(2rem,5vw,4rem)}
+}
+
+/* ---------- Specs ---------- */
+.specs{
+  display:grid;grid-template-columns:1fr;
+  border-top:1px solid var(--line);
+}
+.spec{
+  display:grid;grid-template-columns:1fr;gap:.2rem;
+  padding:1.15rem 0;border-bottom:1px solid var(--line);
+}
+.spec dt{
+  font-size:var(--fs-cap);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);
+  font-family:var(--mono);
+}
+.spec dd{margin:0;font-family:var(--serif);font-size:var(--fs-h3);line-height:1.15}
+.spec dd small{display:block;font-family:var(--sans);font-size:var(--fs-sm);color:var(--ink-soft);margin-top:.3rem;line-height:1.4}
+@media (min-width:680px){
+  .specs{grid-template-columns:1fr 1fr;column-gap:clamp(2rem,5vw,4.5rem)}
+}
+@media (min-width:1080px){
+  .specs{grid-template-columns:1fr 1fr 1fr}
+}
+
+/* ---------- Features (editorial list, NOT 3 centered cards) ---------- */
+.features{display:grid;gap:0}
+.feature{
+  display:grid;grid-template-columns:1fr;gap:.7rem 2rem;
+  padding:clamp(1.8rem,4vw,2.6rem) 0;
+  border-top:1px solid var(--line);
+  align-items:baseline;
+}
+.feature:last-child{border-bottom:1px solid var(--line)}
+.feature__n{font-family:var(--mono);font-size:var(--fs-sm);color:var(--accent);letter-spacing:.1em}
+.feature__h{font-family:var(--serif);font-size:var(--fs-h3);font-weight:400;line-height:1.1}
+.feature__b{color:var(--ink-soft);max-width:54ch;line-height:1.55}
+@media (min-width:820px){
+  .feature{grid-template-columns:5rem 1fr 1.1fr;gap:clamp(1.5rem,4vw,3.5rem)}
+}
+
+/* ---------- Configurator ---------- */
+.cfg{
+  display:grid;grid-template-columns:1fr;gap:clamp(2rem,5vw,3.5rem);
+  align-items:start;
+}
+.cfg__preview{
+  position:relative;
+  background:var(--surface);
+  border:1px solid var(--line);border-radius:var(--r);
+  padding:clamp(1.5rem,4vw,2.6rem);
+  display:grid;gap:1.4rem;
+}
+.cfg__art{width:min(100%,360px);margin-inline:auto}
+.priceblock{
+  display:flex;align-items:flex-end;justify-content:space-between;gap:1rem;flex-wrap:wrap;
+  border-top:1px solid var(--line);padding-top:1.2rem;
+}
+.priceblock .lbl{font-size:var(--fs-cap);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);font-family:var(--mono)}
+.price{font-family:var(--serif);font-size:clamp(1.9rem,1.2rem+2vw,2.7rem);line-height:1;letter-spacing:-.01em}
+.price__sub{font-size:var(--fs-sm);color:var(--ink-soft);font-family:var(--sans)}
+.selrecap{font-size:var(--fs-sm);color:var(--ink-soft);text-align:right}
+.selrecap b{color:var(--ink);font-weight:500}
+
+@media (min-width:920px){
+  .cfg{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .cfg__preview{position:sticky;top:84px}
+}
+
+.fieldset{border:0;margin:0 0 clamp(1.8rem,4vw,2.4rem);padding:0}
+.fieldset > legend{
+  font-family:var(--mono);font-size:var(--fs-cap);letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-soft);padding:0;margin-bottom:1rem;
+  display:flex;justify-content:space-between;width:100%;align-items:baseline;
+}
+.fieldset > legend .hint{color:var(--ink-faint);letter-spacing:.04em}
+
+.swatches{display:grid;gap:.7rem}
+.swatch{
+  position:relative;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:1rem;
+  padding:.85rem 1rem;border:1px solid var(--line);border-radius:12px;cursor:pointer;
+  background:var(--surface);
+  transition:border-color .2s var(--ease),background .2s var(--ease),transform .12s var(--ease),box-shadow .2s var(--ease);
+}
+.swatch:hover{border-color:var(--line-strong);background:var(--surface-2)}
+.swatch:active{transform:translateY(1px)}
+.swatch__chip{
+  width:30px;height:30px;border-radius:50%;
+  background:var(--c);border:1px solid color-mix(in oklab,var(--ink) 20%,transparent);
+  box-shadow:inset 0 0 0 2px color-mix(in oklab,#fff 28%,transparent);
+  flex:none;
+}
+.swatch__chip--mat{border-radius:8px}
+.swatch__name{font-size:.95rem}
+.swatch__price{font-family:var(--mono);font-size:var(--fs-cap);color:var(--ink-soft);white-space:nowrap}
+.swatch__tick{
+  width:22px;height:22px;border-radius:50%;border:1.5px solid var(--line-strong);
+  display:grid;place-items:center;flex:none;transition:border-color .2s var(--ease),background .2s var(--ease)}
+.swatch__tick svg{width:12px;height:12px;opacity:0;transform:scale(.4);transition:opacity .2s var(--ease),transform .2s var(--ease);stroke:var(--accent-ink)}
+/* selected */
+.swatch:has(input:checked){border-color:var(--ink);background:var(--surface);box-shadow:0 0 0 1px var(--ink) inset}
+.swatch:has(input:checked) .swatch__tick{background:var(--accent);border-color:var(--accent)}
+.swatch:has(input:checked) .swatch__tick svg{opacity:1;transform:scale(1)}
+/* keyboard focus reflected from the hidden native radio */
+.swatch:has(input:focus-visible){outline:2.5px solid var(--accent);outline-offset:3px}
+/* disabled / unavailable */
+.swatch:has(input:disabled){opacity:.42;cursor:not-allowed;background:var(--surface)}
+.swatch:has(input:disabled):hover{border-color:var(--line);transform:none}
+.swatch:has(input:disabled) .swatch__price{color:var(--bad)}
+
+.note{
+  display:flex;gap:.6em;align-items:flex-start;
+  font-size:var(--fs-sm);line-height:1.45;
+  border-radius:10px;padding:.7em .9em;margin-top:-.4rem;margin-bottom:1.5rem;
+  background:color-mix(in oklab,var(--accent) 12%,var(--surface));
+  border:1px solid color-mix(in oklab,var(--accent) 30%,var(--line));
+  color:var(--ink);
+}
+.note[hidden]{display:none}
+.note .dot{width:.6em;height:.6em;border-radius:50%;background:var(--accent);margin-top:.45em;flex:none}
+
+.cfg__actions{display:grid;gap:1rem;border-top:1px solid var(--line);padding-top:1.5rem}
+.addbtn{position:relative;width:100%}
+.addbtn .spin{
+  width:1.05em;height:1.05em;border-radius:50%;
+  border:2px solid color-mix(in oklab,var(--bg) 55%,transparent);
+  border-top-color:var(--bg);
+  display:none;
+}
+@media (prefers-reduced-motion:no-preference){
+  .spin{animation:spin .7s linear infinite}
+}
+@keyframes spin{to{transform:rotate(1turn)}}
+.addbtn.is-loading{--b:var(--ink-soft)}
+.addbtn.is-loading .spin{display:inline-block}
+.addbtn.is-loading .lbl-default,.addbtn.is-success .lbl-default{display:none}
+.addbtn .lbl-loading,.addbtn .lbl-success{display:none}
+.addbtn.is-loading .lbl-loading{display:inline}
+.addbtn.is-success{--b:var(--good)}
+.addbtn.is-success .lbl-success{display:inline-flex;align-items:center;gap:.5em}
+
+/* bag recap — empty + filled states */
+.recap{border:1px dashed var(--line-strong);border-radius:12px;padding:1.1rem 1.2rem;background:var(--surface)}
+.recap[data-state="empty"] .recap__filled{display:none}
+.recap[data-state="filled"]{border-style:solid;border-color:var(--line)}
+.recap[data-state="filled"] .recap__empty{display:none}
+.recap__empty{display:flex;gap:.7rem;align-items:center;color:var(--ink-faint);font-size:var(--fs-sm)}
+.recap__empty .mark{width:26px;height:26px;border-radius:50%;border:1.5px solid var(--line-strong);flex:none;display:grid;place-items:center}
+.recap__empty .mark::after{content:"";width:9px;height:9px;border-radius:50%;background:var(--line-strong)}
+.recap__filled{display:grid;gap:.5rem}
+.recap__row{display:flex;justify-content:space-between;gap:1rem;align-items:baseline}
+.recap__row .t{font-size:.95rem}
+.recap__row .t small{display:block;color:var(--ink-soft);font-size:var(--fs-cap);font-family:var(--mono);letter-spacing:.06em;margin-top:.2rem}
+.recap__row .p{font-family:var(--mono);font-size:.95rem}
+.recap__remove{justify-self:start;background:none;border:0;padding:.2em 0;color:var(--ink-soft);font:inherit;font-size:var(--fs-sm);cursor:pointer;text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--line-strong)}
+.recap__remove:hover{color:var(--accent)}
+
+/* ---------- Gallery / details ---------- */
+.gallery{display:grid;grid-template-columns:1fr;gap:clamp(1rem,2.5vw,1.6rem)}
+.tile{
+  position:relative;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;
+  background:var(--surface);display:grid;
+}
+.tile__art{aspect-ratio:4/3;display:grid;place-items:center;background:
+   radial-gradient(120% 90% at 50% 18%, var(--surface-2), var(--surface));
+   overflow:hidden}
+.tile__art svg{width:62%}
+.tile__cap{padding:1.1rem 1.2rem;border-top:1px solid var(--line);display:grid;gap:.35rem}
+.tile__cap .k{font-family:var(--mono);font-size:var(--fs-cap);letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+.tile__cap h3{font-family:var(--serif);font-weight:400;font-size:var(--fs-h3)}
+.tile__cap p{font-size:var(--fs-sm);color:var(--ink-soft);line-height:1.5}
+@media (min-width:680px){.gallery{grid-template-columns:1fr 1fr}}
+@media (min-width:1040px){.gallery{grid-template-columns:repeat(3,1fr)}.tile--wide{grid-column:span 3}}
+.tile--wide .tile__art{aspect-ratio:16/5}
+.tile--wide .tile__art svg{width:min(86%,760px)}
+
+/* ---------- Footer ---------- */
+.foot{background:var(--bg-2);border-top:1px solid var(--line-strong);padding-block:clamp(56px,9vw,104px) 2rem}
+.foot__top{
+  display:grid;grid-template-columns:1fr;gap:clamp(2rem,5vw,3rem);
+  padding-bottom:clamp(2.5rem,6vw,4rem);border-bottom:1px solid var(--line)}
+.foot__news h2{font-family:var(--serif);font-weight:400;font-size:var(--fs-h3);max-width:18ch;line-height:1.12}
+.foot__news p{color:var(--ink-soft);font-size:var(--fs-sm);margin-top:.6rem;max-width:38ch}
+.subscribe{margin-top:1.4rem;max-width:420px}
+.subscribe__row{display:flex;gap:.6rem;flex-wrap:wrap}
+.field{flex:1 1 200px;min-width:0;position:relative}
+.field input{
+  width:100%;font:inherit;font-size:var(--fs-sm);
+  background:var(--surface);color:var(--ink);
+  border:1px solid var(--line-strong);border-radius:999px;
+  padding:.92em 1.2em;
+  transition:border-color .2s var(--ease),box-shadow .2s var(--ease)}
+.field input::placeholder{color:var(--ink-faint)}
+.field input:hover{border-color:var(--ink-soft)}
+.field input:focus-visible{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in oklab,var(--accent) 28%,transparent)}
+.field.is-error input{border-color:var(--bad);box-shadow:0 0 0 3px color-mix(in oklab,var(--bad) 24%,transparent)}
+.formmsg{font-size:var(--fs-cap);margin-top:.7rem;min-height:1.2em;color:var(--ink-soft)}
+.formmsg.is-error{color:var(--bad)}
+.formmsg.is-ok{color:var(--good)}
+
+.foot__cols{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:2rem 1.5rem;
+  padding-block:clamp(2.5rem,6vw,3.5rem)}
+.fcol h3{font-family:var(--mono);font-size:var(--fs-cap);letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:1rem;font-weight:400}
+.fcol ul{list-style:none;margin:0;padding:0;display:grid;gap:.7rem}
+.fcol a{text-decoration:none;font-size:var(--fs-sm);color:var(--ink-soft);transition:color .2s var(--ease)}
+.fcol a:hover,.fcol a:focus-visible{color:var(--ink)}
+@media (min-width:680px){.foot__cols{grid-template-columns:repeat(4,1fr)}}
+@media (min-width:880px){.foot__top{grid-template-columns:1fr 1fr}}
+
+.foot__base{display:flex;flex-wrap:wrap;gap:.6rem 1.5rem;justify-content:space-between;align-items:center;padding-top:2rem}
+.foot__base small{font-size:var(--fs-cap);color:var(--ink-faint);font-family:var(--mono);letter-spacing:.04em}
+.foot__locale{display:inline-flex;gap:.5em;align-items:center;font-family:var(--mono);font-size:var(--fs-cap);color:var(--ink-soft);letter-spacing:.06em}
+
+/* ---------- Scroll reveal (motion only, JS only) ---------- */
+@media (prefers-reduced-motion:no-preference){
+  .js [data-reveal]{opacity:0;transform:translateY(20px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+  .js [data-reveal].is-in{opacity:1;transform:none}
+  .js [data-reveal][data-d="1"]{transition-delay:.07s}
+  .js [data-reveal][data-d="2"]{transition-delay:.14s}
+  .js [data-reveal][data-d="3"]{transition-delay:.21s}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="masthead" id="top">
+  <div class="masthead__in shell">
+    <a class="brand" href="#top" aria-label="FORM — home"><b>F O R M</b></a>
+    <nav class="nav" aria-label="Primary">
+      <div class="nav__links">
+        <a href="#overview">Overview</a>
+        <a href="#specs">Specifications</a>
+        <a href="#configure">Configure</a>
+        <a href="#details">Details</a>
+      </div>
+      <a class="bag" id="bagLink" href="#configure" aria-label="Bag, 0 items">
+        Bag <span class="bag__count" id="bagCount" aria-hidden="true">0</span>
+      </a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ============== HERO ============== -->
+  <section class="hero shell" id="overview" aria-labelledby="heroTitle">
+    <div class="hero__grid">
+      <div class="hero__copy">
+        <p class="hero__edition">
+          <span class="kicker">Edition N°01</span>
+          <span class="line" aria-hidden="true"></span>
+          <span class="kicker">Task Lighting</span>
+        </p>
+        <h1 class="hero__title" id="heroTitle">Light, drawn as a single&nbsp;<em>line</em>.</h1>
+        <p class="hero__lede">Halo&nbsp;01 is a modular task lamp engineered to the millimetre — a continuous 420&nbsp;mm strand of light balanced on an arm machined from solid billet. No dots. No hotspots. No spring in sight.</p>
+        <div class="hero__meta" role="list">
+          <span class="stat" role="listitem"><b>880<small>lm</small></b><span>Output</span></span>
+          <span class="stat" role="listitem"><b>97</b><span>CRI · R9&gt;90</span></span>
+          <span class="stat" role="listitem"><b>2700–4000<small>K</small></b><span>Dim-to-warm</span></span>
+        </div>
+        <div class="hero__cta">
+          <a class="btn btn--accent" href="#configure">Configure yours</a>
+          <a class="btn btn--ghost" href="#specs">Read the specification</a>
+        </div>
+      </div>
+
+      <div class="hero__stage">
+        <span class="hero__index" aria-hidden="true">01</span>
+        <span class="vlabel" aria-hidden="true">Modular Task Lamp — MMXXVI</span>
+        <!-- Live-rendered lamp (showroom default: aluminium / ochre) -->
+        <svg class="lamp hero__art" data-parallax viewBox="0 0 360 440" role="img"
+             aria-label="The Halo 01 task lamp: a slim horizontal light bar on a slender stem rising from a round machined base."
+             style="--structure:#b6b2a7;--struct-dark:#8d8a80;--edge:#d8d4c9;--shade:#c9802f">
+          <defs><filter id="softHero" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="13"/></filter></defs>
+          <ellipse cx="180" cy="398" rx="96" ry="14" fill="var(--struct-dark)" opacity=".16" filter="url(#softHero)"/>
+          <path d="M86 142 L274 142 L320 322 L40 322 Z" fill="#f3e6c7" opacity=".12" filter="url(#softHero)"/>
+          <path data-fill d="M108 366 a72 14 0 0 0 144 0 l0 9 a72 14 0 0 1 -144 0 z" fill="var(--struct-dark)"/>
+          <ellipse data-fill cx="180" cy="366" rx="72" ry="14" fill="var(--structure)"/>
+          <ellipse data-fill cx="180" cy="366" rx="56" ry="10" fill="none" stroke="var(--shade)" stroke-width="2.4"/>
+          <rect data-fill x="174" y="150" width="12" height="218" rx="6" fill="var(--structure)"/>
+          <rect data-fill x="176.4" y="156" width="3.2" height="206" rx="1.6" fill="var(--edge)" opacity=".75"/>
+          <circle data-fill cx="180" cy="150" r="9" fill="var(--struct-dark)"/>
+          <rect data-fill x="60" y="116" width="14" height="26" rx="7" fill="var(--shade)"/>
+          <rect data-fill x="286" y="116" width="14" height="26" rx="7" fill="var(--shade)"/>
+          <rect data-fill x="64" y="116" width="232" height="26" rx="13" fill="var(--structure)"/>
+          <rect data-fill x="78" y="120" width="204" height="4" rx="2" fill="var(--edge)" opacity=".6"/>
+          <rect x="80" y="131" width="200" height="8" rx="4" fill="#f7ecd2"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== SPECS ============== -->
+  <section class="section section--alt" id="specs" aria-labelledby="specsH">
+    <div class="shell">
+      <div class="sechead" data-reveal>
+        <div>
+          <p class="sechead__num">02 — Specification</p>
+          <h2 id="specsH">Measured, not described.</h2>
+        </div>
+        <p>Every figure below is taken from the production unit — photometrics at 10&nbsp;mm intervals, torque to two decimals.</p>
+      </div>
+      <dl class="specs" data-reveal data-d="1">
+        <div class="spec"><dt>Luminous output</dt><dd>880 lm<small>Continuous strand, flicker-free at every level.</small></dd></div>
+        <div class="spec"><dt>Colour temperature</dt><dd>2700–4000 K<small>Dim-to-warm; brightness and warmth fall together.</small></dd></div>
+        <div class="spec"><dt>Colour rendering</dt><dd>CRI 97<small>R9 greater than 90 for true reds and skin tones.</small></dd></div>
+        <div class="spec"><dt>Illuminated length</dt><dd>420 mm<small>Edge-lit diffusion, no visible diodes.</small></dd></div>
+        <div class="spec"><dt>Reach &amp; height</dt><dd>540 / 320 mm<small>Maximum height and forward depth over the desk.</small></dd></div>
+        <div class="spec"><dt>Power</dt><dd>USB-C PD · 12 W<small>Stepless 0–100% via the capacitive arm ribbon.</small></dd></div>
+        <div class="spec"><dt>Base mass</dt><dd>1.9 kg<small>Turned counterweight; holds any angle, springless.</small></dd></div>
+        <div class="spec"><dt>Footprint</dt><dd>Ø 132 mm<small>Recessed inlet; bead-blasted, anodised finish.</small></dd></div>
+        <div class="spec"><dt>Warranty</dt><dd>10 years<small>Serviceable modules with published diagrams.</small></dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ============== FEATURES ============== -->
+  <section class="section" id="why" aria-labelledby="whyH">
+    <div class="shell">
+      <div class="sechead" data-reveal>
+        <div>
+          <p class="sechead__num">03 — Principles</p>
+          <h2 id="whyH">Four decisions, held&nbsp;firmly.</h2>
+        </div>
+        <p>A short list, because each one earned its place by being argued over for months.</p>
+      </div>
+      <div class="features">
+        <article class="feature" data-reveal>
+          <span class="feature__n">01</span>
+          <h3 class="feature__h">One uninterrupted strand</h3>
+          <p class="feature__b">A 420&nbsp;mm edge-lit module runs the full length of the arm — no dots, no hotspots, no diodes peeking through. The desk reads one clean line of light, not a row of points.</p>
+        </article>
+        <article class="feature" data-reveal data-d="1">
+          <span class="feature__n">02</span>
+          <h3 class="feature__h">Dim the way daylight does</h3>
+          <p class="feature__b">A capacitive ribbon along the arm slides output from a 4000&nbsp;K working white down to a 2700&nbsp;K amber. Brightness and warmth fall together, so late evenings never feel clinical.</p>
+        </article>
+        <article class="feature" data-reveal data-d="2">
+          <span class="feature__n">03</span>
+          <h3 class="feature__h">Machined, not moulded</h3>
+          <p class="feature__b">The counterweight base is turned from a single aluminium billet, then bead-blasted and anodised. It pins the arm at any angle without a spring, a clamp, or a visible fastener.</p>
+        </article>
+        <article class="feature" data-reveal data-d="3">
+          <span class="feature__n">04</span>
+          <h3 class="feature__h">Built to be opened</h3>
+          <p class="feature__b">Driver, strand and joint are each a serviceable part with published diagrams and stocked spares. When something wears, you replace the part — not the lamp.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== CONFIGURATOR ============== -->
+  <section class="section section--alt" id="configure" aria-labelledby="cfgH">
+    <div class="shell">
+      <div class="sechead" data-reveal>
+        <div>
+          <p class="sechead__num">04 — Configure</p>
+          <h2 id="cfgH">Make it yours.</h2>
+        </div>
+        <p>Choose a structural material and an anodised accent. The preview and price update as you go.</p>
+      </div>
+
+      <div class="cfg">
+        <!-- live preview -->
+        <div class="cfg__preview">
+          <svg class="lamp cfg__art" id="cfgArt" viewBox="0 0 360 440" role="img"
+               aria-label="Halo 01 in Anodised Aluminium with Ochre accents."
+               style="--structure:#b6b2a7;--struct-dark:#8d8a80;--edge:#d8d4c9;--shade:#c9802f">
+            <defs><filter id="softCfg" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="13"/></filter></defs>
+            <ellipse cx="180" cy="398" rx="96" ry="14" fill="var(--struct-dark)" opacity=".16" filter="url(#softCfg)"/>
+            <path d="M86 142 L274 142 L320 322 L40 322 Z" fill="#f3e6c7" opacity=".12" filter="url(#softCfg)"/>
+            <path data-fill d="M108 366 a72 14 0 0 0 144 0 l0 9 a72 14 0 0 1 -144 0 z" fill="var(--struct-dark)"/>
+            <ellipse data-fill cx="180" cy="366" rx="72" ry="14" fill="var(--structure)"/>
+            <ellipse data-fill cx="180" cy="366" rx="56" ry="10" fill="none" stroke="var(--shade)" stroke-width="2.4"/>
+            <rect data-fill x="174" y="150" width="12" height="218" rx="6" fill="var(--structure)"/>
+            <rect data-fill x="176.4" y="156" width="3.2" height="206" rx="1.6" fill="var(--edge)" opacity=".75"/>
+            <circle data-fill cx="180" cy="150" r="9" fill="var(--struct-dark)"/>
+            <rect data-fill x="60" y="116" width="14" height="26" rx="7" fill="var(--shade)"/>
+            <rect data-fill x="286" y="116" width="14" height="26" rx="7" fill="var(--shade)"/>
+            <rect data-fill x="64" y="116" width="232" height="26" rx="13" fill="var(--structure)"/>
+            <rect data-fill x="78" y="120" width="204" height="4" rx="2" fill="var(--edge)" opacity=".6"/>
+            <rect x="80" y="131" width="200" height="8" rx="4" fill="#f7ecd2"/>
+          </svg>
+
+          <div class="priceblock">
+            <div>
+              <p class="lbl">Total</p>
+              <p class="price"><span id="priceVal" aria-live="polite">€340</span></p>
+              <p class="price__sub">Incl. VAT · free EU shipping</p>
+            </div>
+            <p class="selrecap" aria-hidden="true">Halo 01 · <b id="recapMat">Aluminium</b> · <b id="recapAcc">Ochre</b></p>
+          </div>
+        </div>
+
+        <!-- controls -->
+        <form class="cfg__form" id="cfgForm" novalidate>
+          <fieldset class="fieldset">
+            <legend>Structural material <span class="hint">choose one</span></legend>
+            <div class="swatches" role="radiogroup" aria-label="Structural material">
+              <label class="swatch">
+                <input class="vh" type="radio" name="material" value="alu" checked>
+                <span class="swatch__chip swatch__chip--mat" style="--c:#b6b2a7" aria-hidden="true"></span>
+                <span class="swatch__name">Anodised Aluminium</span>
+                <span class="swatch__price">Included</span>
+                <span class="swatch__tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></span>
+              </label>
+              <label class="swatch">
+                <input class="vh" type="radio" name="material" value="steel">
+                <span class="swatch__chip swatch__chip--mat" style="--c:#565759" aria-hidden="true"></span>
+                <span class="swatch__name">Matte Steel</span>
+                <span class="swatch__price">+€70</span>
+                <span class="swatch__tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></span>
+              </label>
+              <label class="swatch">
+                <input class="vh" type="radio" name="material" value="oak">
+                <span class="swatch__chip swatch__chip--mat" style="--c:#c6a173" aria-hidden="true"></span>
+                <span class="swatch__name">Solid White Oak</span>
+                <span class="swatch__price">+€140</span>
+                <span class="swatch__tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></span>
+              </label>
+            </div>
+          </fieldset>
+
+          <fieldset class="fieldset">
+            <legend>Anodised accent <span class="hint">caps &amp; base ring</span></legend>
+            <div class="swatches" role="radiogroup" aria-label="Anodised accent colour">
+              <label class="swatch">
+                <input class="vh" type="radio" name="accent" value="ochre" checked>
+                <span class="swatch__chip" style="--c:#c9802f" aria-hidden="true"></span>
+                <span class="swatch__name">Ochre</span>
+                <span class="swatch__price">Included</span>
+                <span class="swatch__tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></span>
+              </label>
+              <label class="swatch">
+                <input class="vh" type="radio" name="accent" value="sage">
+                <span class="swatch__chip" style="--c:#7f8b66" aria-hidden="true"></span>
+                <span class="swatch__name">Sage</span>
+                <span class="swatch__price">Included</span>
+                <span class="swatch__tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></span>
+              </label>
+              <label class="swatch">
+                <input class="vh" type="radio" name="accent" value="bone">
+                <span class="swatch__chip" style="--c:#e6dcc6" aria-hidden="true"></span>
+                <span class="swatch__name">Bone</span>
+                <span class="swatch__price">+€15</span>
+                <span class="swatch__tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></span>
+              </label>
+              <label class="swatch">
+                <input class="vh" type="radio" name="accent" value="oxblood">
+                <span class="swatch__chip" style="--c:#7c3a36" aria-hidden="true"></span>
+                <span class="swatch__name">Oxblood</span>
+                <span class="swatch__price">+€30</span>
+                <span class="swatch__tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></span>
+              </label>
+            </div>
+          </fieldset>
+
+          <p class="note" id="cfgNote" hidden role="status">
+            <span class="dot" aria-hidden="true"></span>
+            <span id="cfgNoteText"></span>
+          </p>
+
+          <div class="cfg__actions">
+            <button class="btn btn--accent addbtn" id="addBtn" type="submit">
+              <span class="lbl-default">Add to bag — <span id="btnPrice">€340</span></span>
+              <span class="lbl-loading"><span class="spin" aria-hidden="true"></span> Adding…</span>
+              <span class="lbl-success"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 13l4 4L19 7"/></svg> Added to bag</span>
+            </button>
+
+            <div class="recap" id="recap" data-state="empty" aria-live="polite">
+              <div class="recap__empty">
+                <span class="mark" aria-hidden="true"></span>
+                <span>Your bag is empty — add a configuration to see it here.</span>
+              </div>
+              <div class="recap__filled">
+                <div class="recap__row">
+                  <span class="t">Halo 01<small id="recapLine">Aluminium · Ochre</small></span>
+                  <span class="p" id="recapPrice">€340</span>
+                </div>
+                <button type="button" class="recap__remove" id="recapRemove">Remove</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== DETAILS / GALLERY ============== -->
+  <section class="section" id="details" aria-labelledby="detH">
+    <div class="shell">
+      <div class="sechead" data-reveal>
+        <div>
+          <p class="sechead__num">05 — Up close</p>
+          <h2 id="detH">The parts you only notice in use.</h2>
+        </div>
+        <p>Three details that took the longest to get right, and the one measurement we are proudest of.</p>
+      </div>
+      <div class="gallery">
+        <article class="tile" data-reveal>
+          <div class="tile__art" aria-hidden="true">
+            <svg viewBox="0 0 200 150"><circle cx="100" cy="75" r="46" fill="none" stroke="var(--line-strong)" stroke-width="2"/><circle cx="100" cy="75" r="18" fill="var(--accent)"/><path d="M100 29 v-12 M100 133 v-12 M54 75 h-12 M158 75 h-12" stroke="var(--ink-faint)" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+          <div class="tile__cap"><span class="k">The joint</span><h3>0.4&nbsp;N·m of friction</h3><p>A friction hinge tuned to stay put under the arm’s own weight, yet swing with a single fingertip.</p></div>
+        </article>
+        <article class="tile" data-reveal data-d="1">
+          <div class="tile__art" aria-hidden="true">
+            <svg viewBox="0 0 200 150"><ellipse cx="100" cy="92" rx="70" ry="20" fill="var(--surface-2)" stroke="var(--line-strong)" stroke-width="2"/><ellipse cx="100" cy="86" rx="70" ry="20" fill="var(--bg-2)"/><ellipse cx="100" cy="86" rx="46" ry="12" fill="none" stroke="var(--accent)" stroke-width="2.5"/><rect x="92" y="80" width="16" height="11" rx="3" fill="var(--ink-faint)"/></svg>
+          </div>
+          <div class="tile__cap"><span class="k">The base</span><h3>1.9&nbsp;kg, turned whole</h3><p>132&nbsp;mm of solid aluminium with a recessed USB-C inlet and an anodised accent ring.</p></div>
+        </article>
+        <article class="tile" data-reveal data-d="2">
+          <div class="tile__art" aria-hidden="true">
+            <svg viewBox="0 0 200 150"><rect x="22" y="68" width="156" height="14" rx="7" fill="var(--ink-faint)"/><rect x="30" y="72" width="140" height="6" rx="3" fill="#f4e7c9"/><path d="M40 96 L160 96 L176 132 L24 132 Z" fill="#f3e6c7" opacity=".22"/></svg>
+          </div>
+          <div class="tile__cap"><span class="k">The line</span><h3>Even to ±2%</h3><p>Continuous diffusion measured at every 10&nbsp;mm; the strand never shows where one diode ends.</p></div>
+        </article>
+        <article class="tile tile--wide" data-reveal>
+          <div class="tile__art" aria-hidden="true">
+            <svg viewBox="0 0 760 220"><line x1="40" y1="150" x2="720" y2="150" stroke="var(--line)" stroke-width="1.5"/><g stroke="var(--ink-faint)" stroke-width="1.5"><path d="M40 150 v10 M210 150 v10 M380 150 v10 M550 150 v10 M720 150 v10"/></g><rect x="300" y="64" width="160" height="14" rx="7" fill="var(--ink)"/><rect x="296" y="64" width="10" height="14" rx="5" fill="var(--accent)"/><rect x="454" y="64" width="10" height="14" rx="5" fill="var(--accent)"/><rect x="374" y="78" width="12" height="62" rx="6" fill="var(--ink)"/><ellipse cx="380" cy="150" rx="48" ry="9" fill="var(--ink)"/><text x="40" y="186" font-family="monospace" font-size="11" fill="var(--ink-faint)" letter-spacing="2">0 mm</text><text x="678" y="186" font-family="monospace" font-size="11" fill="var(--ink-faint)" letter-spacing="2">540 mm</text></svg>
+          </div>
+          <div class="tile__cap"><span class="k">Dimensioned drawing</span><h3>Every figure published</h3><p>Front elevation with full dimensioning — the same drawing that ships with each repair manual.</p></div>
+        </article>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ============== FOOTER ============== -->
+<footer class="foot" aria-labelledby="footH">
+  <div class="shell">
+    <div class="foot__top">
+      <div class="foot__news">
+        <h2 id="footH">Drawings, materials, and the occasional release.</h2>
+        <p>One considered email a month. No noise, unsubscribe in a click.</p>
+        <form class="subscribe" id="newsForm" novalidate>
+          <div class="subscribe__row">
+            <div class="field" id="emailField">
+              <label class="vh" for="email">Email address</label>
+              <input id="email" name="email" type="email" inputmode="email" autocomplete="email"
+                     placeholder="you@studio.com" aria-describedby="newsMsg">
+            </div>
+            <button class="btn" type="submit">Subscribe</button>
+          </div>
+          <p class="formmsg" id="newsMsg" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+      <nav class="foot__cols" aria-label="Footer">
+        <div class="fcol">
+          <h3>Product</h3>
+          <ul>
+            <li><a href="#overview">Overview</a></li>
+            <li><a href="#specs">Specification</a></li>
+            <li><a href="#configure">Configure</a></li>
+            <li><a href="#details">Modules &amp; spares</a></li>
+          </ul>
+        </div>
+        <div class="fcol">
+          <h3>Studio</h3>
+          <ul>
+            <li><a href="#overview">About FORM</a></li>
+            <li><a href="#why">Materials</a></li>
+            <li><a href="#details">Repairability</a></li>
+            <li><a href="#overview">Press kit</a></li>
+          </ul>
+        </div>
+        <div class="fcol">
+          <h3>Support</h3>
+          <ul>
+            <li><a href="#configure">Shipping</a></li>
+            <li><a href="#configure">Returns</a></li>
+            <li><a href="#details">Repair guides</a></li>
+            <li><a href="#overview">Contact</a></li>
+          </ul>
+        </div>
+        <div class="fcol">
+          <h3>Legal</h3>
+          <ul>
+            <li><a href="#top">Terms</a></li>
+            <li><a href="#top">Privacy</a></li>
+            <li><a href="#top">Warranty</a></li>
+            <li><a href="#top">Accessibility</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+    <div class="foot__base">
+      <small>© MMXXVI FORM Lighting — Designed and assembled in Dublin.</small>
+      <span class="foot__locale">Ireland · EUR €</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var root=document.documentElement;
+  root.classList.add("js");
+  var reduce=window.matchMedia("(prefers-reduced-motion: reduce)");
+  var $=function(s,c){return (c||document).querySelector(s);};
+  var $$=function(s,c){return Array.prototype.slice.call((c||document).querySelectorAll(s));};
+
+  /* ---------- data ---------- */
+  var MAT={
+    alu:  {name:"Aluminium",     full:"Anodised Aluminium", add:0,   structure:"#b6b2a7", dark:"#8d8a80", edge:"#d8d4c9"},
+    steel:{name:"Steel",         full:"Matte Steel",        add:70,  structure:"#565759", dark:"#3d3e40", edge:"#76777b"},
+    oak:  {name:"Oak",           full:"Solid White Oak",    add:140, structure:"#c6a173", dark:"#9c7748", edge:"#e3c597"}
+  };
+  var ACC={
+    ochre:  {name:"Ochre",   add:0,  color:"#c9802f"},
+    sage:   {name:"Sage",    add:0,  color:"#7f8b66"},
+    bone:   {name:"Bone",    add:15, color:"#e6dcc6"},
+    oxblood:{name:"Oxblood", add:30, color:"#7c3a36"}
+  };
+  var BASE=340;
+  // a single deliberately unavailable pairing — exercises disabled + recovery
+  function available(mat,acc){ return !(mat==="oak" && acc==="oxblood"); }
+
+  var euro;
+  try{ var nf=new Intl.NumberFormat("en-IE",{style:"currency",currency:"EUR",maximumFractionDigits:0});
+       euro=function(n){return nf.format(n);}; }
+  catch(e){ euro=function(n){return "€"+n;}; }
+
+  /* ---------- elements ---------- */
+  var art=$("#cfgArt"), priceVal=$("#priceVal"), btnPrice=$("#btnPrice"),
+      recapMat=$("#recapMat"), recapAcc=$("#recapAcc"),
+      note=$("#cfgNote"), noteText=$("#cfgNoteText"),
+      form=$("#cfgForm"), addBtn=$("#addBtn"),
+      recap=$("#recap"), recapLine=$("#recapLine"), recapPrice=$("#recapPrice"), recapRemove=$("#recapRemove"),
+      bagLink=$("#bagLink"), bagCount=$("#bagCount");
+
+  function matVal(){ return (form.elements["material"]||{}).value; }
+  function accVal(){ return (form.elements["accent"]||{}).value; }
+
+  /* ---------- price animation ---------- */
+  var rafPrice=0, shownPrice=BASE;
+  function setPrice(target){
+    btnPrice.textContent=euro(target);
+    if(reduce.matches){ shownPrice=target; priceVal.textContent=euro(target); return; }
+    cancelAnimationFrame(rafPrice);
+    var from=shownPrice, start=null, dur=440;
+    function step(t){
+      if(start===null) start=t;
+      var k=Math.min(1,(t-start)/dur);
+      var e=1-Math.pow(1-k,3);
+      var v=Math.round(from+(target-from)*e);
+      priceVal.textContent=euro(v);
+      if(k<1){ rafPrice=requestAnimationFrame(step); } else { shownPrice=target; }
+    }
+    rafPrice=requestAnimationFrame(step);
+  }
+
+  /* ---------- core update ---------- */
+  function refreshAccentAvailability(){
+    var mat=matVal();
+    $$('input[name="accent"]').forEach(function(inp){
+      inp.disabled=!available(mat,inp.value);
+    });
+  }
+
+  function update(announceSwitch){
+    var mat=matVal(), acc=accVal();
+
+    // if current accent became unavailable, fall back gracefully
+    if(!available(mat,acc)){
+      var fallback=$('input[name="accent"]:not(:disabled)');
+      if(fallback){
+        var prev=ACC[acc].name;
+        fallback.checked=true;
+        acc=fallback.value;
+        if(announceSwitch){
+          noteText.textContent="“"+prev+"” isn’t offered in "+MAT[mat].full+" — switched to “"+ACC[acc].name+"”.";
+          note.hidden=false;
+        }
+      }
+    } else if(announceSwitch){
+      note.hidden=true;
+    }
+
+    var m=MAT[mat], a=ACC[acc];
+    art.style.setProperty("--structure",m.structure);
+    art.style.setProperty("--struct-dark",m.dark);
+    art.style.setProperty("--edge",m.edge);
+    art.style.setProperty("--shade",a.color);
+    art.setAttribute("aria-label","Halo 01 in "+m.full+" with "+a.name+" accents.");
+
+    recapMat.textContent=m.name;
+    recapAcc.textContent=a.name;
+    setPrice(BASE+m.add+a.add);
+  }
+
+  $$('input[name="material"]').forEach(function(inp){
+    inp.addEventListener("change",function(){ refreshAccentAvailability(); update(true); });
+  });
+  $$('input[name="accent"]').forEach(function(inp){
+    inp.addEventListener("change",function(){ note.hidden=true; update(false); });
+  });
+
+  /* ---------- add to bag : default → loading → success → empty/filled ---------- */
+  var addTimer=0, revertTimer=0;
+  form.addEventListener("submit",function(ev){
+    ev.preventDefault();
+    if(addBtn.disabled) return;
+    clearTimeout(addTimer); clearTimeout(revertTimer);
+    addBtn.classList.remove("is-success");
+    addBtn.classList.add("is-loading");
+    addBtn.disabled=true;
+    addBtn.setAttribute("aria-busy","true");
+
+    addTimer=setTimeout(function(){
+      addBtn.classList.remove("is-loading");
+      addBtn.classList.add("is-success");
+      addBtn.removeAttribute("aria-busy");
+      addBtn.disabled=false;
+
+      var m=MAT[matVal()], a=ACC[accVal()];
+      recapLine.textContent=m.full+" · "+a.name;
+      recapPrice.textContent=euro(BASE+m.add+a.add);
+      recap.setAttribute("data-state","filled");
+      bagCount.textContent="1";
+      bagLink.classList.add("is-filled");
+      bagLink.setAttribute("aria-label","Bag, 1 item");
+
+      revertTimer=setTimeout(function(){ addBtn.classList.remove("is-success"); },2400);
+    }, reduce.matches?260:900);
+  });
+
+  recapRemove.addEventListener("click",function(){
+    recap.setAttribute("data-state","empty");
+    bagCount.textContent="0";
+    bagLink.classList.remove("is-filled");
+    bagLink.setAttribute("aria-label","Bag, 0 items");
+  });
+
+  /* ---------- newsletter : default / focus / error / success ---------- */
+  var newsForm=$("#newsForm"), emailField=$("#emailField"), email=$("#email"), newsMsg=$("#newsMsg");
+  var EMAIL=/^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+  newsForm.addEventListener("submit",function(ev){
+    ev.preventDefault();
+    var v=email.value.trim();
+    newsMsg.classList.remove("is-ok","is-error");
+    if(!EMAIL.test(v)){
+      emailField.classList.add("is-error");
+      email.setAttribute("aria-invalid","true");
+      newsMsg.classList.add("is-error");
+      newsMsg.textContent=v?"That doesn’t look like a valid address — check and try again.":"Please enter your email address.";
+      email.focus();
+      return;
+    }
+    emailField.classList.remove("is-error");
+    email.removeAttribute("aria-invalid");
+    newsMsg.classList.add("is-ok");
+    newsMsg.textContent="Thank you — please confirm via the link we just sent.";
+    email.value="";
+  });
+  email.addEventListener("input",function(){
+    if(emailField.classList.contains("is-error")){
+      emailField.classList.remove("is-error");
+      email.removeAttribute("aria-invalid");
+      newsMsg.classList.remove("is-error"); newsMsg.textContent="";
+    }
+  });
+
+  /* ---------- sticky header shadow ---------- */
+  var head=$(".masthead"), stuck=false;
+  function onScrollHead(){
+    var s=window.scrollY>8;
+    if(s!==stuck){ stuck=s; head.classList.toggle("is-stuck",s); }
+  }
+  window.addEventListener("scroll",onScrollHead,{passive:true}); onScrollHead();
+
+  /* ---------- scroll reveal (motion only) ---------- */
+  if(!reduce.matches && "IntersectionObserver" in window){
+    var io=new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(en.isIntersecting){ en.target.classList.add("is-in"); io.unobserve(en.target); }
+      });
+    },{rootMargin:"0px 0px -8% 0px",threshold:.12});
+    $$("[data-reveal]").forEach(function(el){ io.observe(el); });
+  }
+
+  /* ---------- restrained hero parallax (motion only) ---------- */
+  var hero=$(".hero__art"), ticking=false;
+  function applyParallax(){
+    ticking=false;
+    if(reduce.matches){ hero.style.transform=""; return; }
+    var r=hero.getBoundingClientRect();
+    var mid=r.top+r.height/2 - window.innerHeight/2;
+    var y=Math.max(-26,Math.min(26, mid*-0.05));
+    hero.style.transform="translate3d(0,"+y.toFixed(2)+"px,0)";
+  }
+  function onScrollPar(){ if(!ticking){ ticking=true; requestAnimationFrame(applyParallax); } }
+  if(hero){
+    window.addEventListener("scroll",onScrollPar,{passive:true});
+    window.addEventListener("resize",onScrollPar,{passive:true});
+    applyParallax();
+  }
+
+  /* react to a live change of the motion preference */
+  reduce.addEventListener&&reduce.addEventListener("change",function(){
+    if(reduce.matches&&hero) hero.style.transform="";
+  });
+
+  /* ---------- init ---------- */
+  refreshAccentAvailability();
+  update(false);
+})();
+</script>
+</body>
+</html>

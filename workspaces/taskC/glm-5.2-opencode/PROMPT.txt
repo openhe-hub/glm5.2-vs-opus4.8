@@ -1,0 +1,32 @@
+为一个虚构高端设计品牌 “FORM” 实现一个沉浸式单页产品页（hero product 自定，
+如模块化台灯 / 机械腕表 / 桌面音箱，二选一即可）。这是一道考审美与交付完成度的题。
+
+【必须包含的区块】
+1. 艺术指导级 Hero：有明确的版式主张与负空间，不是“居中大标题 + 副标题”套路。
+2. 规格 / 特性区：信息设计扎实，有清晰的排版层级与节奏。
+3. 交互式配置器（Configurator）：可选材质/颜色（≥3 选项），
+   实时更新预览与价格；切换有得体的过渡。
+4. 画廊或细节展示区。
+5. 页脚（含次级信息层级）。
+
+【交互与状态（硬性）】
+- 滚动驱动的揭示/视差，做得克制、不晕，且 prefers-reduced-motion 下自动降级。
+- 配置器全键盘可达：Tab 顺序合理、:focus-visible 可见、Enter/方向键可操作。
+- 必须设计齐全部状态：default / hover / focus / active / disabled / loading / empty / error。
+- 响应式 320px → 1440px 全程无横向溢出。
+- 暗色模式：遵循 prefers-color-scheme。
+
+【技术约束（硬性）】
+- 单一自包含文件；不得引入任何 UI 组件库（Bootstrap/shadcn/Material/Ant 等一律禁止）。
+- 字体仅用系统字体或自托管，不外链第三方字体 CDN。
+- 传输 JS（gzip 后，不含字体）≤ 30KB —— 故不建议引入重框架。
+- 60fps，无 console 报错，语义化 HTML。
+- 目标：Lighthouse a11y ≥ 95，performance ≥ 90。
+
+【明令禁止（出现即扣“原创性”）】
+- 默认 Tailwind 调色板（那个标志性的蓝）、未改动的组件库外观。
+- “居中 Hero + 三张特性卡片”模板。
+- emoji 当图标、lorem ipsum 占位、靠 stock 渐变堆视觉。
+
+【交付】单个文件 + 一段 README 写明：art direction 取向、字体/网格/色板系统、
+做了哪些状态与可访问性处理。

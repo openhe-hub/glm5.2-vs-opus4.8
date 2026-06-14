@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# usage: ./run <port> <wal_path>
+set -euo pipefail
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+exec "$DIR/bin/kvserver" "$@"

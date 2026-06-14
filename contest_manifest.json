@@ -1,0 +1,43 @@
+{
+  "contestants": [
+    {
+      "slug": "glm-5.2-opencode",
+      "label": "GLM-5.2 + opencode"
+    },
+    {
+      "slug": "opus-4.8-claude-code",
+      "label": "Claude Opus 4.8 + Claude Code"
+    }
+  ],
+  "tasks": {
+    "taskA": {
+      "prompt": "taskA/public/PROMPT.txt",
+      "judge": "taskA/private_judge/grader.py"
+    },
+    "taskB": {
+      "prompt": "taskB/public/PROMPT.txt",
+      "judge": "taskB/private_judge/grader.py",
+      "tests_script": "taskB/private_judge/make_tests.sh"
+    },
+    "taskC": {
+      "prompt": "taskC/public/PROMPT.txt",
+      "judge": "taskC/private_judge/gate_check.py",
+      "audit": "taskC/private_judge/run_audit.sh",
+      "llm_judge": "taskC/private_judge/llm_judge.py"
+    }
+  },
+  "workspaces": {
+    "taskA": [
+      "workspaces/taskA/glm-5.2-opencode",
+      "workspaces/taskA/opus-4.8-claude-code"
+    ],
+    "taskB": [
+      "workspaces/taskB/glm-5.2-opencode",
+      "workspaces/taskB/opus-4.8-claude-code"
+    ],
+    "taskC": [
+      "workspaces/taskC/glm-5.2-opencode",
+      "workspaces/taskC/opus-4.8-claude-code"
+    ]
+  }
+}

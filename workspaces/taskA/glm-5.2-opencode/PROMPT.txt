@@ -1,0 +1,37 @@
+实现一个支持 Snapshot Isolation 的内存 KV 存储，带 WAL 持久化与崩溃恢复。
+对外通过 TCP 暴露一个极简文本协议。
+
+【启动契约】
+- 提供 solution/build.sh（可为空操作）用于构建。
+- 提供可执行 solution/run，调用方式：./run <port> <wal_path>
+  - 监听 127.0.0.1:<port>
+  - 服务就绪后，必须向 stderr 打印一行 "READY"
+  - <wal_path> 为 WAL 文件路径；进程重启时从该文件恢复已提交数据
+
+【线协议】每行一条命令，换行 \n 结尾，响应也以 \n 结尾：
+  BEGIN          -> OK <txid>        # 开启事务，快照=当前最后已提交版本
+  SET <k> <v>    -> OK               # 缓冲写入（k、v 不含空格，v 允许为字符串）
+  DEL <k>        -> OK               # 缓冲删除
+  GET <k>        -> VALUE <v> | NIL  # 读：快照 + 自身未提交写
+  COMMIT         -> OK | CONFLICT    # 提交或因写写冲突中止
+  ABORT          -> OK               # 放弃当前事务
+  QUIT           -> （关闭连接）
+一条连接同一时刻最多一个活跃事务。非事务态执行读写返回 "ERR no-txn"。
+
+【语义要求】
+1. 快照隔离：事务读到 BEGIN 时刻的已提交快照 + 自身未提交写入；
+   无脏读、可重复读（同一事务内对同一 key 多次 GET 结果稳定）。
+2. 写写冲突：两个事务基于同一快照写同一 key，只有一个 COMMIT 成功，
+   另一个返回 CONFLICT（first-committer-wins）。
+3. 持久化：COMMIT 返回 OK 即保证该事务写入已落盘（fsync）。
+4. 崩溃恢复：进程被 kill -9 后用同一 <wal_path> 重启——
+   已 ACK 的提交必须全部可见；未提交/已 ABORT 的写入必须不可见；
+   WAL 尾部 torn write 需靠校验（如 crc32）识别并丢弃。
+5. 版本 GC：长时间运行下内存有界，不可无限堆积旧版本。
+
+【性能目标】在本机单进程，8 连接并发下提交吞吐 ≥ 5000 commits/s（请按评测机调）。
+
+【交付】solution/ 目录，含 build.sh、run，以及源码与简短 README 说明实现要点。
+
+【额外比赛限制】
+- 不得引入外部数据库或 KV 中间件；需自行实现存储、事务语义与 WAL。

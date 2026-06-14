@@ -1,0 +1,28 @@
+# macOS / editor noise
+.DS_Store
+*.swp
+*.swo
+
+# Python / Node / local tool caches
+__pycache__/
+*.py[cod]
+node_modules/
+.venv/
+venv/
+
+# Generated judge artifacts
+gate_shots/
+taskB/private_judge/tests/
+taskB/private_judge/reference
+lh.json
+
+# Build outputs from contestant solutions
+**/solution/bin/
+**/solution/sol
+**/solution/kvsi
+*.o
+*.out
+
+# Local logs and temporary audit output
+*.log
+tmp/
